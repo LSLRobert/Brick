@@ -1,5 +1,14 @@
+# files
+GitCmd.txt
+
+# Directories
+**/bak/
+**/bin/
+bin-int/
+
 # Prerequisites
 *.d
+*.log
 
 # Compiled Object files
 *.slo
@@ -30,3 +39,4 @@
 *.exe
 *.out
 *.app
+*.bat
