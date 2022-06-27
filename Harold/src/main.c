@@ -30,13 +30,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
   
   // loop
   MSG Message = { 0 };
-  while (GetMessageA(&Message, NULL, 0, 0) > 0)
+  gApplicationIsRunning = TRUE;
+  
+  while (gApplicationIsRunning == TRUE)
   {
-    // run run run
-    TranslateMessage(&Message);
+    while (PeekMessageA(&Message, gApplicationWindow, 0, 0, PM_REMOVE))
+    {
+      DispatchMessageA(&Message);
+    }
     
-    DispatchMessageA(&Message);
+    ProcessPlayerInput();
     
+    RenderFrameGraphics();
+    
+    // temp solution
+    Sleep(1);
   }
   
   // Exit
@@ -56,7 +64,10 @@ LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WP
   {
     case WM_CLOSE:
     {
+      gApplicationIsRunning = FALSE;
+      
       PostQuitMessage(0);
+      
       break;
     }
 //    case WM_CREATE:
@@ -75,13 +86,11 @@ LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WP
 
 
 // CreateMainWindow
-DWORD CreateMainWindow()
+DWORD CreateMainWindow(void)
 {
   DWORD Result = ERROR_SUCCESS;
   
   WNDCLASSEXA WindowClass = { sizeof(WNDCLASSEXA) };
-  
-  HWND WindowHandle = NULL;
   
   WindowClass.style = 0;
   
@@ -114,14 +123,14 @@ DWORD CreateMainWindow()
     goto Exit;
   }
   
-  WindowHandle = CreateWindowExA(
+  gApplicationWindow = CreateWindowExA(
     WS_EX_CLIENTEDGE, WindowClass.lpszClassName, GAME_WINDOW_TITLE, 
     WS_OVERLAPPEDWINDOW | WS_VISIBLE, 
     CW_USEDEFAULT, CW_USEDEFAULT, 240, 120, 
     NULL, NULL, GetModuleHandleA(NULL), NULL
   );
   
-  if (WindowHandle == NULL)
+  if (gApplicationWindow == NULL)
   {
     Result = -1;
     
@@ -137,7 +146,7 @@ Exit:
 
 
 // GameIsAlreadyRunning
-DWORD GameIsAlreadyRunning()
+DWORD GameIsAlreadyRunning(void)
 {
   DWORD Result = 0;
   
@@ -155,5 +164,25 @@ DWORD GameIsAlreadyRunning()
   }
   
   return Result;
+}
+
+
+// ProcessPlayerInput
+void ProcessPlayerInput(void)
+{
+  i16 EscapeKeyIsDown = GetAsyncKeyState(VK_ESCAPE);
+  
+  if (EscapeKeyIsDown)
+  {
+    SendMessageA(gApplicationWindow, WM_CLOSE, 0, 0);
+  }
+  
+}
+
+
+// RenderFrameGraphics
+void RenderFrameGraphics(void)
+{
+  
 }
 
