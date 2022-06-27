@@ -62,7 +62,7 @@ gcc ./src/window/screen.c -o ./obj/screen.o -c
 
 
 :library
-set Library=-lopengl32
+set Library=-lgdi32 -lopengl32
 
 :link_objects
 gcc %FLAGS% -o ./bin/%NAME%.exe ./obj/*.o %Library%

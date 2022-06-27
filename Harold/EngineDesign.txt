@@ -18,6 +18,7 @@ Window (Win32_w64/Win32_x86/Linux/Mac) ? Mobile(Apple/Android)
 Context (GL/DX12/Vulkan)
 Monitor
   Width/Height/Scale (Windows Virtual Screen) 
+  Full screen
 Events
   Keys
   Mouse

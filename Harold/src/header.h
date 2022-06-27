@@ -19,6 +19,7 @@ typedef int32_t   bool;
 #pragma warning(push, 3)
 #define WINDOWS_LEAN_AND_MEAN
 #include <windows.h>
+//#include <shellscalingapi.h>
 #pragma warning(pop)
 
 
