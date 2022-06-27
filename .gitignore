@@ -4,6 +4,7 @@ GitCmd.txt
 # Directories
 **/bak/
 **/bin/
+**/obj/
 bin-int/
 
 # Prerequisites
@@ -39,4 +40,4 @@ bin-int/
 *.exe
 *.out
 *.app
-*.bat
+# *.bat
