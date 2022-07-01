@@ -15,7 +15,9 @@ Window (Win32_w64/Win32_x86/Linux/Mac) ? Mobile(Apple/Android)
   #pragma warning(push, 3) // Win32 Warning Suppression
   #include "windows.h"
   #pragma warning(pop)
-Context (GL/DX12/Vulkan)
+Context (GL/DX12/Vulkan) glad.dav1d.de
+
+Timing
 Monitor
   Width/Height/Scale (Windows Virtual Screen) 
   Full screen
@@ -26,7 +28,7 @@ Events
 OpenGL Binding (glad.dav1d.de)
 
 Message/Game Loop
-Sound
+Sound - SDL2 Mixer?
 Logging (All/Error/Warn/Debug/Log)
 PreHeader
 Thread

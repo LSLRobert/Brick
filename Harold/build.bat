@@ -6,6 +6,12 @@ if not exist obj mkdir obj
 :project_name
 set /p NAME=<name.bat
 
+:file_list
+set MAIN=.\src\main.c
+set WIND=.\src\window\window.c .\src\window\screen.c
+
+set FILES=%MAIN% %WIND%
+
 :day_year
 set "_cmd=Get Day^,Month^,Year^"
 for /l %%L in (2020 4 2100)do set "_array_leap_year_=!_array_leap_year_!%%L,"
@@ -55,14 +61,17 @@ set Warning=-Wall
 set FLAGS=%Debug% %Warning% -std=c11
 
 :compile_objects
-gcc ./src/main.c -o ./obj/main.o -c
-gcc ./src/window/window.c -o ./obj/window.o -c
-gcc ./src/window/screen.c -o ./obj/screen.o -c
-
-
+::gcc ./src/main.c -o ./obj/main.o -c
+(for %%f in (%FILES%) do ( 
+  gcc %%f -o %%f.o -c
+  move/y %%f.o ./obj > null
+))
 
 :library
 set Library=-lgdi32 -lopengl32
+
+:resource
+windres -i ./res/resource.rc -o ./obj/resource.o
 
 :link_objects
 gcc %FLAGS% -o ./bin/%NAME%.exe ./obj/*.o %Library%

@@ -5,6 +5,14 @@
 // WinMain
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow)
 {
+  // TESTING:: BEGIN
+  // from Window folder window.c
+  CreateOurWindow();
+  // from Window folder screen.c
+  CreateScreen();
+  
+  // TESTING:: END
+  
   LRESULT Result = 0;
   
   UNREFERENCED_PARAMETER(hInstance);
@@ -256,6 +264,7 @@ void SetDPIAware(void)
   
   i32 Release = atoi(BufferData);
   
+  // DONE:: set through the Application Manifest
   if (Version >= 6.2f)
   {
     if (Release < 1607) // Windows 8.1
