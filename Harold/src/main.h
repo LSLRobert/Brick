@@ -14,42 +14,17 @@
 
 #define APP_RESOLUTION_HEIGHT   240
 
-#define APP_RESOLUTION_BPP      32
-
-#define APP_RESOLUTION_MEMORY   (APP_RESOLUTION_WIDTH * APP_RESOLUTION_HEIGHT * (APP_RESOLUTION_BPP / 8))
-
-// structures
-typedef struct GAMEBITMAP
-{
-  BITMAPINFO BitmapInfo;
-  
-  i32 Padding;
-  
-  void* Memory;
-  
-} GAMEBITMAP;
-
-typedef struct PIXEL32
-{
-  u8 Red;
-  
-  u8 Green;
-  
-  u8 Blue;
-  
-  u8 Alpha;
-  
-} PIXEL32;
-
 
 // Global Variables
 HANDLE gApplicationWindow;
 
 bool gApplicationIsRunning;
 
-GAMEBITMAP gDrawingSurface;
-
 MONITORINFO gMonitorInfo;
+
+HDC gDeviceContext;
+
+HGLRC gGlResource;
 
 
 // Declaration
@@ -59,15 +34,16 @@ LRESULT CALLBACK MainWindowProcedures(HWND, UINT, WPARAM, LPARAM);
 
 DWORD CreateMainWindow(void);
 
+DWORD CreateWindowGlContext(void);
+
 DWORD GameIsAlreadyRunning(void);
 
-void GetRegKeyValue(char*, HKEY, char*, char*);
+LSTATUS GetRegKeyValue(char*, HKEY, char*, char*);
 
 void SetDPIAware(void);
 
 void ProcessPlayerInput(void);
 
 void RenderFrameGraphics(void);
-
 
 #endif // MAIN_H

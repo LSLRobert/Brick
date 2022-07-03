@@ -8,9 +8,13 @@ set /p NAME=<name.bat
 
 :file_list
 set MAIN=.\src\main.c
-set WIND=.\src\window\window.c .\src\window\screen.c
+::set WIND=.\src\window\window.c .\src\window\screen.c
+set GLAD=.\src\glad\glad.c
 
-set FILES=%MAIN% %WIND%
+set FILES=%MAIN% %WIND% %GLAD%
+
+:library
+set Library=-lgdi32 -lopengl32
 
 :day_year
 set "_cmd=Get Day^,Month^,Year^"
@@ -64,11 +68,8 @@ set FLAGS=%Debug% %Warning% -std=c11
 ::gcc ./src/main.c -o ./obj/main.o -c
 (for %%f in (%FILES%) do ( 
   gcc %%f -o %%f.o -c
-  move/y %%f.o ./obj > null
+  move/y %%f.o ./obj > nul 2>&1
 ))
-
-:library
-set Library=-lgdi32 -lopengl32
 
 :resource
 windres -i ./res/resource.rc -o ./obj/resource.o

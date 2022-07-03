@@ -5,8 +5,8 @@ File Structure
 build
 ---------
 
-Language Compiler (c/c++/java/c#)
 Build System (Batch/Make/CMake/Ant)
+Language Compiler (c/c++/java/c#)
 Library (Static/Dynamic/Source)
 Warning Level (-Wall/Error/Warn)
 Optimization (Debug/Release)

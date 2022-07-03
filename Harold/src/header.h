@@ -23,9 +23,9 @@ typedef int32_t   bool;
 #include "../res/resource.h"
 #pragma warning(pop)
 
+// GL Version 4.5
+#include "glad/glad.h"
 
 #include "main.h"
-#include "window/window.h"
-#include "window/screen.h"
 
 #endif // HEADER_H

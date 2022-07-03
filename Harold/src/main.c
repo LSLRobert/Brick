@@ -5,14 +5,6 @@
 // WinMain
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow)
 {
-  // TESTING:: BEGIN
-  // from Window folder window.c
-  CreateOurWindow();
-  // from Window folder screen.c
-  CreateScreen();
-  
-  // TESTING:: END
-  
   LRESULT Result = 0;
   
   UNREFERENCED_PARAMETER(hInstance);
@@ -36,27 +28,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
   // windows
   if (Result = CreateMainWindow() != ERROR_SUCCESS)
   {
-    goto Exit;
-  }
-  
-  gDrawingSurface.BitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-  
-  gDrawingSurface.BitmapInfo.bmiHeader.biWidth  = APP_RESOLUTION_WIDTH;
-  
-  gDrawingSurface.BitmapInfo.bmiHeader.biHeight = APP_RESOLUTION_HEIGHT;
-  
-  gDrawingSurface.BitmapInfo.bmiHeader.biBitCount = APP_RESOLUTION_BPP;
-  
-  gDrawingSurface.BitmapInfo.bmiHeader.biCompression = BI_RGB;
-  
-  gDrawingSurface.BitmapInfo.bmiHeader.biPlanes = 1;
-  
-  gDrawingSurface.Memory = VirtualAlloc(0, APP_RESOLUTION_MEMORY, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-  
-  if (gDrawingSurface.Memory == NULL)
-  {
-    MessageBoxA(NULL, "Window Drawing Surface Memory Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
-    
     goto Exit;
   }
   
@@ -94,6 +65,9 @@ LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WP
   
   switch (Message)
   {
+//    case WM_SIZE:
+//  glViewport(0, 0, APP_RESOLUTION_WIDTH, APP_RESOLUTION_HEIGHT);
+    
     case WM_CLOSE:
     {
       gApplicationIsRunning = FALSE;
@@ -102,10 +76,15 @@ LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WP
       
       break;
     }
-//    case WM_CREATE:
-//    case WM_PAINT:
-//    case WM_SIZE:
-//    case WM_DESTROY:
+    
+    case WM_DESTROY:
+    {
+      ReleaseDC(gApplicationWindow, gDeviceContext);
+      
+      wglDeleteContext(gGlResource);
+      
+      break;
+    }
     
     default:
     {
@@ -140,7 +119,7 @@ DWORD CreateMainWindow(void)
   
   WindowClass.hCursor = LoadCursorA(NULL, IDC_ARROW);
   
-  WindowClass.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(255, 0, 255));
+  WindowClass.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
   
   WindowClass.lpszMenuName = NULL;
   
@@ -175,7 +154,7 @@ DWORD CreateMainWindow(void)
   
   u32 Monitor = GetMonitorInfoA(MonitorFromWindow(gApplicationWindow, MONITOR_DEFAULTTOPRIMARY), &gMonitorInfo);
   
-  if (Monitor == 0)
+  if (Monitor == 0) // Fail = 0
   {
     Result = 0x80261001; // ERROR_MONITOR_NO_DESCRIPTOR
     
@@ -191,6 +170,76 @@ DWORD CreateMainWindow(void)
   printf("MonitorWidth:  %i\n", MonitorWidth);
   printf("MonitorHeight: %i\n", MonitorHeight);
   
+  CreateWindowGlContext();
+  
+Exit:
+  
+  return Result;
+}
+
+
+// CreateWindowGlContext
+DWORD CreateWindowGlContext(void)
+{
+  DWORD Result = 0;
+  
+  u32  PixelFormat;
+  
+  PIXELFORMATDESCRIPTOR PixelFormatDescriptor =
+  {
+    sizeof(PIXELFORMATDESCRIPTOR),  //  size of this pfd
+    1,                     // version number
+    PFD_DRAW_TO_WINDOW |   // support window
+    PFD_SUPPORT_OPENGL |   // support OpenGL
+    PFD_DOUBLEBUFFER,      // double buffered
+    PFD_TYPE_RGBA,         // RGBA type
+    24,                    // 24-bit color depth
+    0, 0, 0, 0, 0, 0,      // color bits ignored
+    0,                     // no alpha buffer
+    0,                     // shift bit ignored
+    0,                     // no accumulation buffer
+    0, 0, 0, 0,            // accum bits ignored
+    32,                    // 32-bit z-buffer
+    0,                     // no stencil buffer
+    0,                     // no auxiliary buffer
+    PFD_MAIN_PLANE,        // main layer
+    0,                     // reserved
+    0, 0, 0                // layer masks ignored
+  };
+  
+  gDeviceContext = GetDC(gApplicationWindow);
+  // Fail = NULL
+  
+  PixelFormat = ChoosePixelFormat(gDeviceContext, &PixelFormatDescriptor);
+  // Fail = 0, GetLastError
+  
+  Result = SetPixelFormat(gDeviceContext, PixelFormat, &PixelFormatDescriptor);
+  // Fail = FALSE, GetLastError
+  
+  gGlResource = wglCreateContext(gDeviceContext);
+  // Fail = NULL, GetLastError
+  
+  wglMakeCurrent(gDeviceContext, gGlResource);
+  // Fail = FALSE, GetLastError
+  
+//  gladLoadGL();
+  gladLoadGLVersion(4, 5);
+  // Fail = 0
+  
+  if (Result == FALSE)
+  {
+    u32 error = GetLastError();
+    
+    MessageBoxA(NULL, "Failed to get Window GL Context!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    
+    goto Exit;
+  }
+  
+  glViewport(0, 0, APP_RESOLUTION_WIDTH, APP_RESOLUTION_HEIGHT);
+  
+  printf("Vendor:   %s\n", glGetString(GL_VENDOR));
+  printf("Renderer: %s\n", glGetString(GL_RENDERER));
+  printf("Version:  %s\n", glGetString(GL_VERSION));
   
 Exit:
   
@@ -234,17 +283,18 @@ void ProcessPlayerInput(void)
 
 
 // GetRegKeyValue
-void GetRegKeyValue(char* BufferData, HKEY hkey, char* RegKey, char* Key)
+LSTATUS GetRegKeyValue(char* BufferData, HKEY hkey, char* RegKey, char* Key)
 {
 	DWORD BufferSize = 8192;
   
   LSTATUS Status = RegGetValueA(hkey, RegKey, Key, RRF_RT_REG_SZ, NULL, (PVOID)&BufferData[0], &BufferSize);
   
-  if (Status != ERROR_SUCCESS)
+  if (Status != ERROR_SUCCESS) // Fail = system error code, Success = ERROR_SUCCESS
   {
     MessageBoxA(NULL, "Failed to get Registry Key Value!", "Error!", MB_ICONEXCLAMATION | MB_OK);
   }
   
+  return Status;
 }
 
 
@@ -290,46 +340,10 @@ void SetDPIAware(void)
 // RenderFrameGraphics
 void RenderFrameGraphics(void)
 {
-  // ---------------------------
-  // drawing
-  i8* ptr = gDrawingSurface.Memory;
+  glClearColor(0.8f, 0.4f, 0.1f, 1.0f);
   
-  // noise
-//  srand((u32)((uint64_t)gDrawingSurface.Memory & 0xFFFFFFFF));
-//  for (i32 i = 0; i < APP_RESOLUTION_MEMORY; i++)
-//  {
-//    ptr[i] = (char)rand()%256;
-//  }
+  glClear(GL_COLOR_BUFFER_BIT);
   
-  // color
-  PIXEL32 ClearColor = { 255, 127, 0, 255 }; // orange
-  for (i32 i = 0; i < APP_RESOLUTION_MEMORY; i += 4)
-  {
-    ptr[i + 0] = ClearColor.Blue;
-    ptr[i + 1] = ClearColor.Green;
-    ptr[i + 2] = ClearColor.Red;
-    ptr[i + 3] = ClearColor.Alpha;
-  }
-  
-  // ---------------------------
-  HDC DeviceContext = GetDC(gApplicationWindow);
-  
-  StretchDIBits(DeviceContext, 
-  0, // [in] int xDest,
-  0, // [in] int yDest,
-  APP_WINDOW_WIDTH,  // [in] int DestWidth,
-  APP_WINDOW_HEIGHT, // [in] int DestHeight,
-  0, // [in] int xSrc,
-  0, // [in] int ySrc,
-  APP_RESOLUTION_WIDTH,  // [in] int SrcWidth,
-  APP_RESOLUTION_HEIGHT, // [in] int SrcHeight,
-  // --------------------
-  gDrawingSurface.Memory,      // [in] const VOID       *lpBits,
-  &gDrawingSurface.BitmapInfo, // [in] const BITMAPINFO *lpbmi,
-  DIB_RGB_COLORS,             // [in] UINT             iUsage,
-  SRCCOPY                     // [in] DWORD            rop
-  );
-  
-  ReleaseDC(gApplicationWindow, DeviceContext);
+  SwapBuffers(gDeviceContext);
 }
 
