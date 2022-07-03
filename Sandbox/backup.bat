@@ -3,7 +3,7 @@
 set FOLDER=bak
 if not exist .\%FOLDER% mkdir %FOLDER%
 :name
-set NAME=Engine
+set /p NAME=<name.bat
 :year
 set year=%date:~-4%
 rem echo year=%year%

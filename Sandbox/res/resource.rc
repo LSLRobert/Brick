@@ -1,0 +1,44 @@
+#include <windows.h>
+#include "resource.h"
+
+// https://www.transmissionzero.co.uk/computing/win32-apps-with-mingw/
+
+// Win32 application icon.
+IDI_APPICON   ICON    "Application.ico"
+
+// Application manifest.
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST    "Application.manifest"
+
+// Executable version information.
+VS_VERSION_INFO     VERSIONINFO
+FILEVERSION         1,0,0,0
+PRODUCTVERSION      1,0,0,0
+#define COMPANYNAME         "Last Straw Labs, Inc."
+#define APPNAME             "Harold"
+
+// Detailed Define
+#define FILEDESCRIPTION     APPNAME " Win32 Engine Test"
+#define LEGALCOPYRIGHT      "©2022 " COMPANYNAME
+#define ORIGINALFILENAME    APPNAME ".exe"
+#define FILEVERSION         "1.0.0.0"
+
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName",      COMPANYNAME
+      VALUE "FileDescription",  FILEDESCRIPTION
+      VALUE "FileVersion",      FILEVERSION
+      VALUE "InternalName",     APPNAME
+      VALUE "LegalCopyright",   LEGALCOPYRIGHT
+      VALUE "OriginalFilename", ORIGINALFILENAME
+      VALUE "ProductName",      FILEDESCRIPTION
+      VALUE "ProductVersion",   FILEVERSION
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END

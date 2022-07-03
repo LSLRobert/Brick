@@ -8,13 +8,19 @@ set /p NAME=<name.bat
 
 :file_list
 set MAIN=.\src\main.c
-::set WIND=.\src\window\window.c .\src\window\screen.c
-set GLAD=.\src\glad\glad.c
 
-set FILES=%MAIN% %WIND% %GLAD%
+set FILES=%MAIN%
 
 :library
-set Library=-lgdi32 -lopengl32
+set Library=D:\Projects\Engine\Harold\bin\harlold.dll
+
+:copy_lib_files
+set FCOPY=harlold.dll
+if not exist .\bin\%FCOPY% (
+  echo Copying %FCOPY%
+  copy/-y/b ..\Harold\bin\%FCOPY% .\bin\%FCOPY% > nul 2>&1
+)
+if not exist .\bin\%FCOPY% goto end
 
 :day_year
 set "_cmd=Get Day^,Month^,Year^"
@@ -75,12 +81,7 @@ set FLAGS=%Debug% %Warning% -std=c11
 windres -i ./res/resource.rc -o ./obj/resource.o
 
 :link_objects
-::gcc %FLAGS% -o ./bin/%NAME%.exe ./obj/*.o %Library%
-gcc %FLAGS% -shared ./obj/*.o %Library% -o ./bin/%NAME%.dll
-gcc %FLAGS% -static ./obj/*.o %Library% -o ./bin/%NAME%.o
-::  -Wl,--out-implib=lib${module}.dll.a \
-::  -Wl,--export-all-symbols \
-::  -Wl,--enable-auto-import
+gcc %FLAGS% -o ./bin/%NAME%.exe ./obj/*.o %Library%
 
 :end
 setlocal disableextensions
