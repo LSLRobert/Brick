@@ -14,6 +14,9 @@ set FILES=%MAIN%
 :library
 set Library=D:\Projects\Engine\Harold\bin\harlold.dll
 
+:include
+set Include=-I ..\Harold\src\
+
 :copy_lib_files
 set FCOPY=harlold.dll
 if not exist .\bin\%FCOPY% (
@@ -73,7 +76,7 @@ set FLAGS=%Debug% %Warning% -std=c11
 :compile_objects
 ::gcc ./src/main.c -o ./obj/main.o -c
 (for %%f in (%FILES%) do ( 
-  gcc %%f -o %%f.o -c
+  gcc %Include% %%f -o %%f.o -c
   move/y %%f.o ./obj > nul 2>&1
 ))
 
