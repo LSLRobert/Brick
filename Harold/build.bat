@@ -8,13 +8,16 @@ set /p NAME=<name.bat
 
 :file_list
 set MAIN=.\src\main.c
-::set WIND=.\src\window\window.c .\src\window\screen.c
+set WIND=.\src\window\win32.c
 set GLAD=.\src\glad\glad.c
 
 set FILES=%MAIN% %WIND% %GLAD%
 
 :library
 set Library=-lgdi32 -lopengl32
+
+:include
+set Include=-I .\src\
 
 :day_year
 set "_cmd=Get Day^,Month^,Year^"
@@ -67,7 +70,7 @@ set FLAGS=%Debug% %Warning% -std=c11
 :compile_objects
 ::gcc ./src/main.c -o ./obj/main.o -c
 (for %%f in (%FILES%) do ( 
-  gcc %%f -o %%f.o -c
+  gcc %Include% %%f -o %%f.o -c
   move/y %%f.o ./obj > nul 2>&1
 ))
 
