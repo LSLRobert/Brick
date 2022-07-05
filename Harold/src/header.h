@@ -25,6 +25,8 @@
   
   #include "main.h"
   #include "window/win32.h"
+  #include "event/event32.h"
+  #include "render/rendergl.h"
   
 #else // PLATFORM_WINDOWS
   

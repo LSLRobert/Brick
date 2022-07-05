@@ -18,45 +18,45 @@ typedef struct MainArgs
   
 } MainArgs;
 
+typedef struct WindowData // non Platform
+{
+  Window window;
+  Window deviceContext;
+  Window resourceGL;
+  string title;
+  i32 width;
+  i32 height;
+  i32 major;
+  i32 minor;
+  i32 viewportWidth;
+  i32 viewportHeight;
+  i32 monitorWidth;
+  i32 monitorHeight;
+  bool fullscreen;
+  bool isRunning;
+  bool multiRun;
+  bool windowSet;
+  string vendorGL;
+  string renderGL;
+  string versionGL;
+  
+} WindowData;
+
 // Global Variables
 MainArgs gMainArgs;
-
-// Declaration
-HAROLD_API void WindowSetViewport(i32 width, i32 height);
-HAROLD_API i32 WindowGetViewportWidth();
-HAROLD_API i32 WindowGetViewportHeight();
-
-// OpenGL
-HAROLD_API void WindowSetVersionGL(i32 major, i32 minor);
-HAROLD_API i32 WindowGetVersionGLMajor();
-HAROLD_API i32 WindowGetVersionGLMinor();
-
-HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fullscreen);
-
-HAROLD_API string WindowGetVendorGL();
-HAROLD_API string WindowGetRenderGL();
-HAROLD_API string WindowGetVersionGL();
+WindowData gWindowData;
 
 // Internal
 void WindowSetData();
-int CreateMainWindow(void);
 void c_glGetString();
-int CreateWindowGlContext(void);
+i32 CreateMainWindow(void);
+i32 CreateWindowGlContext(void);
+bool IsAlreadyRunning(void);
+LSTATUS GetRegKeyValue(u8* BufferData, HKEY hkey, u8* RegKey, u8* Key);
 LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WParam, LPARAM LParam);
+HDC GetDeviceContext();
 
 #endif // WIN32_H
-
-
-//// Declaration
-//DWORD GameIsAlreadyRunning(void);
-//
-//LSTATUS GetRegKeyValue(char*, HKEY, char*, char*);
-//
-//void SetDPIAware(void);
-//
-//void ProcessPlayerInput(void);
-//
-//void RenderFrameGraphics(void);
 
 ///////////////////////////
 // EOF

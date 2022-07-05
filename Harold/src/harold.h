@@ -28,6 +28,8 @@ typedef double    f64;
 typedef float     f32;
 typedef int32_t   bool;
 typedef uint8_t*  string;
+typedef uint64_t  u64;
+typedef int64_t   i64;
 
 // current platform
 #define PLATFORM_WINDOWS
@@ -47,21 +49,43 @@ typedef uint8_t*  string;
 // fields
 typedef void* Window;
 
-// Declaration
-HAROLD_API void WindowSetViewport(i32 width, i32 height);
-HAROLD_API i32 WindowGetViewportWidth();
-HAROLD_API i32 WindowGetViewportHeight();
+typedef struct Event
+{
+  i32 type;
+  
+} Event;
 
-// OpenGL
-HAROLD_API void WindowSetVersionGL(i32 major, i32 minor);
-HAROLD_API i32 WindowGetVersionGLMajor();
-HAROLD_API i32 WindowGetVersionGLMinor();
+///////////////////////////
+// Window - win32.h
+///////////////////////////
+HAROLD_API void   WindowSetViewport(i32 width, i32 height);
+HAROLD_API i32    WindowGetViewportWidth();
+HAROLD_API i32    WindowGetViewportHeight();
 
 HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fullscreen);
+
+HAROLD_API void   WindowSetVersionGL(i32 major, i32 minor);
+HAROLD_API i32    WindowGetVersionGLMajor();
+HAROLD_API i32    WindowGetVersionGLMinor();
 
 HAROLD_API string WindowGetVendorGL();
 HAROLD_API string WindowGetRenderGL();
 HAROLD_API string WindowGetVersionGL();
+
+HAROLD_API bool IsApplicationRunning();
+HAROLD_API void SetApplicationRunning(bool running);
+HAROLD_API void LogCurrentWindowVersion(void);
+
+///////////////////////////
+// Event - event32.h
+///////////////////////////
+HAROLD_API bool PollEvent(Event* event);
+
+
+///////////////////////////
+// Render - rendergl.h
+///////////////////////////
+HAROLD_API void RenderFrameGraphics(void);
 
 
 #endif // HAROLD_H

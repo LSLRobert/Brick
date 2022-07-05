@@ -20,25 +20,41 @@ int main(int argc, char** argv)
     goto Exit;
   }
   
+  // Log
+  LogCurrentWindowVersion();
+  
+  // Event Queue
+  Event event;
+  
   // game loop
-//  while (should_quit) 
-//  {
-//    SDL_Event event;
-//    
-//    while (SDL_PollEvent(&event))
-//    {
-//      switch (event.type) 
-//      {
-//        case SDL_QUIT: 
-//          should_quit = true;
+  while (IsApplicationRunning())
+  {
+    while (PollEvent(&event))
+    {
+      switch (event.type)
+      {
+//        case MSG_CLOSE:
+//        case MSG_QUIT:
+//        {
+//          SetApplicationRunning(false);
 //          break;
-//        default:
-//          break;
-//      }
-//      
-//    }
-//    
-//  }
+//        }
+        
+        default:
+        {
+          break;
+        }
+        
+      }
+    } // PollEvent
+    
+    
+    RenderFrameGraphics();
+    
+    
+    // temp solution
+//    Sleep(1);
+  }
   
 Exit:
   

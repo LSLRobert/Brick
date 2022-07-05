@@ -9,33 +9,6 @@
 #include "win32.h"
 
 
-// Structures non Platform
-typedef struct WindowData
-{
-  Window window;
-  Window deviceContext;
-  Window resourceGL;
-  string title;
-  i32 width;
-  i32 height;
-  i32 major;
-  i32 minor;
-  i32 viewportWidth;
-  i32 viewportHeight;
-  i32 monitorWidth;
-  i32 monitorHeight;
-  bool fullscreen;
-  bool windowSet;
-  string vendorGL;
-  string renderGL;
-  string versionGL;
-  
-} WindowData;
-
-// Global Variables
-WindowData gWindowData;
-
-
 // WindowSetViewport
 HAROLD_API void WindowSetViewport(i32 width, i32 height)
 {
@@ -46,6 +19,7 @@ HAROLD_API void WindowSetViewport(i32 width, i32 height)
   }
 }
 
+
 // WindowGetViewportWidth
 HAROLD_API i32 WindowGetViewportWidth()
 {
@@ -53,11 +27,52 @@ HAROLD_API i32 WindowGetViewportWidth()
   return gWindowData.viewportWidth;
 }
 
+
 // WindowGetViewportHeight
 HAROLD_API i32 WindowGetViewportHeight()
 {
   if (!gWindowData.windowSet) WindowSetData();
   return gWindowData.viewportHeight;
+}
+
+
+// WindowCreateGL
+HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fullscreen)
+{
+  i32 Result = 0;
+  if (!gWindowData.windowSet) WindowSetData();
+  
+  if(width > 0 && height > 0)
+  {
+    gWindowData.width = width; gWindowData.height = height;
+  }
+  gWindowData.fullscreen = fullscreen;
+  
+  Result = CreateMainWindow();
+  if (Result == 10101)
+  {
+    gWindowData.isRunning = false;
+    goto Exit;
+  }
+  if (Result != 0) 
+  {
+    // Error:
+    MessageBoxA(NULL, "Failed to get Create Window!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
+  
+  Result = CreateWindowGlContext();
+  if (Result != 0) 
+  {
+    // Error:
+    MessageBoxA(NULL, "Failed to get Window GL Context!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
+  
+Exit:
+  
+  if (Result) return (Window)(i64)Result;
+  else return gWindowData.window;
 }
 
 
@@ -71,12 +86,14 @@ HAROLD_API void WindowSetVersionGL(i32 major, i32 minor)
   }
 }
 
+
 // WindowGetVersionGLMajor
 HAROLD_API i32 WindowGetVersionGLMajor()
 {
   if (!gWindowData.windowSet) WindowSetData();
   return gWindowData.major;
 }
+
 
 // WindowGetVersionGLMinor
 HAROLD_API i32 WindowGetVersionGLMinor()
@@ -86,36 +103,12 @@ HAROLD_API i32 WindowGetVersionGLMinor()
 }
 
 
-// WindowCreateGL
-HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fullscreen)
-{
-  if (!gWindowData.windowSet) WindowSetData();
-//  Window  gWindowData.window;
-//  string  gWindowData.title;
-//  i32     gWindowData.width;
-//  i32     gWindowData.height;
-//  i32     gWindowData.major;
-//  i32     gWindowData.minor;
-//  i32     gWindowData.viewportWidth;
-//  i32     gWindowData.viewportHeight;
-//  bool    gWindowData.fullscreen;
-//  bool    gWindowData.windowSet;
-//  string  gWindowData.vendorGL;
-//  string  gWindowData.renderGL;
-//  string  gWindowData.versionGL;
-  
-  CreateMainWindow();
-  CreateWindowGlContext();
-  
-  return gWindowData.window;
-}
-
-
 // WindowGetVendorGL
 HAROLD_API string WindowGetVendorGL()
 {
   return gWindowData.vendorGL;
 }
+
 
 // WindowGetRenderGL
 HAROLD_API string WindowGetRenderGL()
@@ -123,10 +116,48 @@ HAROLD_API string WindowGetRenderGL()
   return gWindowData.renderGL;
 }
 
+
 // WindowGetVersionGL
 HAROLD_API string WindowGetVersionGL()
 {
   return gWindowData.versionGL;
+}
+
+
+// IsApplicationRunning
+HAROLD_API bool IsApplicationRunning()
+{
+  return gWindowData.isRunning;
+}
+
+
+// SetApplicationRunning
+HAROLD_API void SetApplicationRunning(bool running)
+{
+  gWindowData.isRunning = running;
+}
+
+
+// LogCurrentWindowsVersion
+HAROLD_API void LogCurrentWindowVersion(void)
+{
+  // DPI Awareness is set in the Application Manifest
+  u8* RegKey = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion";
+  
+  u8 BufferData0[255];
+  GetRegKeyValue(&BufferData0[0], HKEY_LOCAL_MACHINE, RegKey, "CurrentVersion");
+  f32 Version = atof(BufferData0);
+  
+  u8 BufferData1[255];
+  GetRegKeyValue(&BufferData1[0], HKEY_LOCAL_MACHINE, RegKey, "ReleaseId");
+  i32 Release = atoi(BufferData1);
+  
+  if (Version >= 6.2f)
+  {
+    if (Release < 1607) printf("Windows 8.1\n"); // Windows 8.1
+    else printf("Windows 10, version %i\n", Release); // Windows 10, version 1607
+  }
+  else printf("Windows Vista & 7\n"); // Windows Vista & 7
 }
 
 
@@ -144,14 +175,39 @@ void WindowSetData()
   gWindowData.viewportWidth  = APP_RESOLUTION_WIDTH;
   gWindowData.viewportHeight = APP_RESOLUTION_HEIGHT;
   gWindowData.fullscreen = false;
+  gWindowData.isRunning = true;
+  gWindowData.multiRun = false;
   gWindowData.windowSet = true;
 }
 
 
-// CreateMainWindow
-int CreateMainWindow(void)
+// c_glGetString
+void c_glGetString()
 {
-  int Result = 0; // ERROR_SUCCESS
+  const string VendorGL = (string)(const u8*)glGetString(GL_VENDOR);
+  const string RenderGL = (string)(const u8*)glGetString(GL_RENDERER);
+  const string VersionGL = (string)(const u8*)glGetString(GL_VERSION);
+  
+  gWindowData.vendorGL = (string)malloc(strlen(VendorGL) + 1);
+  gWindowData.renderGL = (string)malloc(strlen(RenderGL) + 1);
+  gWindowData.versionGL = (string)malloc(strlen(VersionGL) + 1);
+  
+  strcpy(gWindowData.vendorGL, VendorGL);
+  strcpy(gWindowData.renderGL, RenderGL);
+  strcpy(gWindowData.versionGL, VersionGL);
+}
+
+
+// CreateMainWindow
+i32 CreateMainWindow(void)
+{
+  i32 Result = 0; // ERROR_SUCCESS
+  if (IsAlreadyRunning())
+  {
+    MessageBoxA(NULL, "This Application is Already Running!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    Result = 10101; // Exit NOW!!!
+    goto Exit;
+  }
   
   WNDCLASSEXA WindowClass = { sizeof(WNDCLASSEXA) };
   WindowClass.style = 0;
@@ -205,26 +261,11 @@ Exit:
   return Result;
 }
 
-// c_glGetString
-void c_glGetString()
-{
-  const string VendorGL = (string)(const char*)glGetString(GL_VENDOR);
-  const string RenderGL = (string)(const char*)glGetString(GL_RENDERER);
-  const string VersionGL = (string)(const char*)glGetString(GL_VERSION);
-  
-  gWindowData.vendorGL = (string)malloc(strlen(VendorGL) + 1);
-  gWindowData.renderGL = (string)malloc(strlen(RenderGL) + 1);
-  gWindowData.versionGL = (string)malloc(strlen(VersionGL) + 1);
-  
-  strcpy(gWindowData.vendorGL, VendorGL);
-  strcpy(gWindowData.renderGL, RenderGL);
-  strcpy(gWindowData.versionGL, VersionGL);
-}
 
 // CreateWindowGlContext
-int CreateWindowGlContext(void)
+i32 CreateWindowGlContext(void)
 {
-  int Result = 0;
+  i32 Result = 0;
   u32 PixelFormat;
   
   PIXELFORMATDESCRIPTOR PixelFormatDescriptor =
@@ -246,28 +287,51 @@ int CreateWindowGlContext(void)
   };
   
   gWindowData.deviceContext = GetDC(gWindowData.window);
-  // Fail = NULL
+  if (gWindowData.deviceContext == NULL) // Fail = NULL
+  {
+    Result = -1;
+    MessageBoxA(NULL, "Failed to get Device Context!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
   
   PixelFormat = ChoosePixelFormat(gWindowData.deviceContext, &PixelFormatDescriptor);
-  // Fail = 0, GetLastError
+  if (PixelFormat == 0) // Fail = 0, GetLastError
+  {
+    Result = GetLastError();
+    MessageBoxA(NULL, "Failed to Choose Pixel Format!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
   
-  Result = SetPixelFormat(gWindowData.deviceContext, PixelFormat, &PixelFormatDescriptor);
-  // Fail = FALSE, GetLastError
+  bool format = SetPixelFormat(gWindowData.deviceContext, PixelFormat, &PixelFormatDescriptor);
+  if (format == false) // Fail = false, GetLastError
+  {
+    Result = GetLastError();
+    MessageBoxA(NULL, "Failed to Set Pixel Format!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
   
   gWindowData.resourceGL = wglCreateContext(gWindowData.deviceContext);
-  // Fail = NULL, GetLastError
-  
-  wglMakeCurrent(gWindowData.deviceContext, gWindowData.resourceGL);
-  // Fail = FALSE, GetLastError
-  
-//  gladLoadGL();
-  gladLoadGLVersion(gWindowData.major, gWindowData.minor);
-  // Fail = 0
-  
-  if (Result == FALSE)
+  if (gWindowData.resourceGL == NULL) // Fail = NULL, GetLastError
   {
-    u32 error = GetLastError();
-    MessageBoxA(NULL, "Failed to get Window GL Context!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    Result = GetLastError();
+    MessageBoxA(NULL, "Failed to get GL Resource Context!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
+  
+  bool make = wglMakeCurrent(gWindowData.deviceContext, gWindowData.resourceGL);
+  if (make == false) // Fail = false, GetLastError
+  {
+    Result = GetLastError();
+    MessageBoxA(NULL, "Failed Make GL Window Current!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+    goto Exit;
+  }
+  
+  // Load OpenGl w/ gladLoadGL();
+  bool load = gladLoadGLVersion(gWindowData.major, gWindowData.minor);
+  if (load == 0) // Fail = 0
+  {
+    Result = -1;
+    MessageBoxA(NULL, "Failed to Load OpenGL (glad)!", "Error!", MB_ICONEXCLAMATION | MB_OK);
     goto Exit;
   }
   
@@ -284,6 +348,35 @@ Exit:
 }
 
 
+// IsAlreadyRunning
+bool IsAlreadyRunning(void)
+{
+  bool Result = false;
+  if (!gWindowData.multiRun)
+  {
+    HANDLE Mutex = NULL;
+    Mutex = CreateMutexA(NULL, false, APP_NAME "_GameMutex");
+    if (GetLastError() == ERROR_ALREADY_EXISTS) Result = true;
+  }
+  return Result;
+}
+
+
+// GetRegKeyValue
+LSTATUS GetRegKeyValue(u8* BufferData, HKEY hkey, u8* RegKey, u8* Key)
+{
+	DWORD BufferSize = 8192;
+  LSTATUS Status = RegGetValueA(hkey, RegKey, Key, RRF_RT_REG_SZ, NULL, (PVOID)&BufferData[0], &BufferSize);
+  
+  if (Status != ERROR_SUCCESS) // Fail = system error code, Success = ERROR_SUCCESS
+  {
+    MessageBoxA(NULL, "Failed to get Registry Key Value!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+  }
+  
+  return Status;
+}
+
+
 // MainWindowProcedures
 LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WParam, LPARAM LParam)
 {
@@ -291,13 +384,21 @@ LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WP
   
   switch (Message)
   {
-//    case WM_SIZE:
-//  glViewport(0, 0, APP_RESOLUTION_WIDTH, APP_RESOLUTION_HEIGHT);
+    case WM_SIZE:
+    {
+      puts("WM_SIZE  - CALLBACK\n");
+      // TODO::TODO::TODO::TODO::TODO::TODO::TODO::
+      // resize the window and reset the viewport if needed
+      // send a RESIZE event to the EVENT system
+      break;
+    }
     
     case WM_CLOSE:
     {
-//      gApplicationIsRunning = FALSE;
-      PostQuitMessage(0);
+      // TODO::TODO::TODO::TODO::TODO::TODO::TODO::
+      // send a CLOSE message to the EVENT system
+      // shutdown is handled by the APP, not the engine
+      gWindowData.isRunning = false;
       break;
     }
     
@@ -316,6 +417,14 @@ LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WP
   
   return Result;
 }
+
+
+// GetDeviceContext
+HDC GetDeviceContext()
+{
+  return gWindowData.deviceContext;
+}
+
 
 ///////////////////////////
 // EOF
