@@ -12,7 +12,7 @@
 ///////////////////////////
 // WinMain
 ///////////////////////////
-#ifdef PLATFORM_WINDOWS
+#ifdef LS_PLATFORM_WINDOWS
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow)
 {
   LRESULT Result = 0;
@@ -31,14 +31,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
   
   return Result;
 }
-#else
+#else // LS_PLATFORM_WINDOWS
 int main(int argc, char** argv)
 {
   MessageBoxA(NULL, "Engine is running standard main!", "Error!", MB_ICONEXCLAMATION | MB_OK);
   
   return 0;
 }
-#endif
+#endif // LS_PLATFORM_WINDOWS
 
 
 ///////////////////////////

@@ -6,8 +6,8 @@
 //
 // include "harold.h"
 ////////////////////////////////////////////////////////////
-#ifndef HAROLD_H
-#define HAROLD_H
+#ifndef LS_HAROLD_H
+#define LS_HAROLD_H
 
 // defines
 #define false   0
@@ -27,68 +27,68 @@ typedef int8_t    i8;
 typedef double    f64;
 typedef float     f32;
 typedef int32_t   bool;
-typedef uint8_t*  string;
+typedef uint8_t*  LS_String;
 typedef uint64_t  u64;
 typedef int64_t   i64;
 
 // current platform
-#define PLATFORM_WINDOWS
+#define LS_PLATFORM_WINDOWS
 
-#ifdef PLATFORM_WINDOWS
-  #ifdef HAROLD_BUILD
-    #define HAROLD_API __declspec( dllexport )
+#ifdef LS_PLATFORM_WINDOWS
+  #ifdef LS_HAROLD_BUILD
+    #define LS_HAROLD_API __declspec( dllexport )
   #else
-    #define HAROLD_API __declspec( dllimport )
+    #define LS_HAROLD_API __declspec( dllimport )
   #endif
 #else
-  #error Harold currently only support Windows!
+  #error LS Harold currently only support Windows!
   // #elseif future platforms
 #endif
 
 
 // fields
-typedef void* Window;
+typedef void* LS_Window;
 
-typedef struct Event
+typedef struct LS_Event
 {
   i32 type;
   
-} Event;
+} LS_Event;
 
 ///////////////////////////
 // Window - win32.h
 ///////////////////////////
-HAROLD_API void   WindowSetViewport(i32 width, i32 height);
-HAROLD_API i32    WindowGetViewportWidth();
-HAROLD_API i32    WindowGetViewportHeight();
+LS_HAROLD_API void      LS_WindowSetViewport(i32 width, i32 height);
+LS_HAROLD_API i32       LS_WindowGetViewportWidth();
+LS_HAROLD_API i32       LS_WindowGetViewportHeight();
 
-HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fullscreen);
+LS_HAROLD_API LS_Window LS_WindowCreateGL(LS_String title, i32 width, i32 height, bool fullscreen);
 
-HAROLD_API void   WindowSetVersionGL(i32 major, i32 minor);
-HAROLD_API i32    WindowGetVersionGLMajor();
-HAROLD_API i32    WindowGetVersionGLMinor();
+LS_HAROLD_API void      LS_WindowSetVersionGL(i32 major, i32 minor);
+LS_HAROLD_API i32       LS_WindowGetVersionGLMajor();
+LS_HAROLD_API i32       LS_WindowGetVersionGLMinor();
 
-HAROLD_API string WindowGetVendorGL();
-HAROLD_API string WindowGetRenderGL();
-HAROLD_API string WindowGetVersionGL();
+LS_HAROLD_API LS_String LS_WindowGetVendorGL();
+LS_HAROLD_API LS_String LS_WindowGetRenderGL();
+LS_HAROLD_API LS_String LS_WindowGetVersionGL();
 
-HAROLD_API bool IsApplicationRunning();
-HAROLD_API void SetApplicationRunning(bool running);
-HAROLD_API void LogCurrentWindowVersion(void);
+LS_HAROLD_API bool      LS_IsApplicationRunning();
+LS_HAROLD_API void      LS_SetApplicationRunning(bool running);
+LS_HAROLD_API void      LS_LogCurrentWindowVersion(void);
 
 ///////////////////////////
 // Event - event32.h
 ///////////////////////////
-HAROLD_API bool PollEvent(Event* event);
+LS_HAROLD_API bool      LS_PollEvent(LS_Event* event);
 
 
 ///////////////////////////
 // Render - rendergl.h
 ///////////////////////////
-HAROLD_API void RenderFrameGraphics(void);
+LS_HAROLD_API void      LS_RenderFrameGraphics(void);
 
 
-#endif // HAROLD_H
+#endif // LS_HAROLD_H
 
 ///////////////////////////
 // EOF

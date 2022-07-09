@@ -5,8 +5,8 @@
 // July 4, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef WIN32_H
-#define WIN32_H
+#ifndef LS_WIN32_H
+#define LS_WIN32_H
 
 // Structures
 typedef struct MainArgs
@@ -20,10 +20,10 @@ typedef struct MainArgs
 
 typedef struct WindowData // non Platform
 {
-  Window window;
-  Window deviceContext;
-  Window resourceGL;
-  string title;
+  LS_Window window;
+  LS_Window deviceContext;
+  LS_Window resourceGL;
+  LS_String title;
   i32 width;
   i32 height;
   i32 major;
@@ -36,9 +36,9 @@ typedef struct WindowData // non Platform
   bool isRunning;
   bool multiRun;
   bool windowSet;
-  string vendorGL;
-  string renderGL;
-  string versionGL;
+  LS_String vendorGL;
+  LS_String renderGL;
+  LS_String versionGL;
   
 } WindowData;
 
@@ -56,7 +56,7 @@ LSTATUS GetRegKeyValue(u8* BufferData, HKEY hkey, u8* RegKey, u8* Key);
 LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WParam, LPARAM LParam);
 HDC GetDeviceContext();
 
-#endif // WIN32_H
+#endif // LS_WIN32_H
 
 ///////////////////////////
 // EOF

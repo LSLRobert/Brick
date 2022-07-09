@@ -16,7 +16,7 @@
 
 
 // PollEvent
-HAROLD_API bool PollEvent(Event *event)
+LS_HAROLD_API bool LS_PollEvent(LS_Event *event)
 {
   // loop
   MSG Message = { 0 };

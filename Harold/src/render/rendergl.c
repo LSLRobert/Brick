@@ -9,7 +9,7 @@
 #include "rendergl.h"
 
 
-HAROLD_API void RenderFrameGraphics(void)
+LS_HAROLD_API void LS_RenderFrameGraphics(void)
 {
   glClearColor(0.8f, 0.4f, 0.1f, 1.0f);
   

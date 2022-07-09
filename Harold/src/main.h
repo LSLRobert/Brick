@@ -5,18 +5,18 @@
 // July 1, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef LS_MAIN_H
+#define LS_MAIN_H
 
 // define defaults
-#define APP_NAME                "Powered by Harold Game Engine"
+#define LS_APP_NAME                "Powered by Harold Game Engine"
 
-#define APP_RESOLUTION_WIDTH    600
+#define LS_APP_RESOLUTION_WIDTH    600
 
-#define APP_RESOLUTION_HEIGHT   480
+#define LS_APP_RESOLUTION_HEIGHT   480
 
 
-#endif // MAIN_H
+#endif // LS_MAIN_H
 
 ///////////////////////////
 // EOF

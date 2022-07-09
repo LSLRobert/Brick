@@ -10,7 +10,7 @@
 
 
 // WindowSetViewport
-HAROLD_API void WindowSetViewport(i32 width, i32 height)
+LS_HAROLD_API void LS_WindowSetViewport(i32 width, i32 height)
 {
   if (!gWindowData.windowSet) WindowSetData();
   if(width > 0 && height > 0)
@@ -21,7 +21,7 @@ HAROLD_API void WindowSetViewport(i32 width, i32 height)
 
 
 // WindowGetViewportWidth
-HAROLD_API i32 WindowGetViewportWidth()
+LS_HAROLD_API i32 LS_WindowGetViewportWidth()
 {
   if (!gWindowData.windowSet) WindowSetData();
   return gWindowData.viewportWidth;
@@ -29,7 +29,7 @@ HAROLD_API i32 WindowGetViewportWidth()
 
 
 // WindowGetViewportHeight
-HAROLD_API i32 WindowGetViewportHeight()
+LS_HAROLD_API i32 LS_WindowGetViewportHeight()
 {
   if (!gWindowData.windowSet) WindowSetData();
   return gWindowData.viewportHeight;
@@ -37,7 +37,7 @@ HAROLD_API i32 WindowGetViewportHeight()
 
 
 // WindowCreateGL
-HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fullscreen)
+LS_HAROLD_API LS_Window LS_WindowCreateGL(LS_String title, i32 width, i32 height, bool fullscreen)
 {
   i32 Result = 0;
   if (!gWindowData.windowSet) WindowSetData();
@@ -71,13 +71,13 @@ HAROLD_API Window WindowCreateGL(string title, i32 width, i32 height, bool fulls
   
 Exit:
   
-  if (Result) return (Window)(i64)Result;
+  if (Result) return (LS_Window)(i64)Result;
   else return gWindowData.window;
 }
 
 
 // WindowSetVersionGL
-HAROLD_API void WindowSetVersionGL(i32 major, i32 minor)
+LS_HAROLD_API void LS_WindowSetVersionGL(i32 major, i32 minor)
 {
   if (!gWindowData.windowSet) WindowSetData();
   if (major > 0)
@@ -88,7 +88,7 @@ HAROLD_API void WindowSetVersionGL(i32 major, i32 minor)
 
 
 // WindowGetVersionGLMajor
-HAROLD_API i32 WindowGetVersionGLMajor()
+LS_HAROLD_API i32 LS_WindowGetVersionGLMajor()
 {
   if (!gWindowData.windowSet) WindowSetData();
   return gWindowData.major;
@@ -96,7 +96,7 @@ HAROLD_API i32 WindowGetVersionGLMajor()
 
 
 // WindowGetVersionGLMinor
-HAROLD_API i32 WindowGetVersionGLMinor()
+LS_HAROLD_API i32 LS_WindowGetVersionGLMinor()
 {
   if (!gWindowData.windowSet) WindowSetData();
   return gWindowData.minor;
@@ -104,42 +104,42 @@ HAROLD_API i32 WindowGetVersionGLMinor()
 
 
 // WindowGetVendorGL
-HAROLD_API string WindowGetVendorGL()
+LS_HAROLD_API LS_String LS_WindowGetVendorGL()
 {
   return gWindowData.vendorGL;
 }
 
 
 // WindowGetRenderGL
-HAROLD_API string WindowGetRenderGL()
+LS_HAROLD_API LS_String LS_WindowGetRenderGL()
 {
   return gWindowData.renderGL;
 }
 
 
 // WindowGetVersionGL
-HAROLD_API string WindowGetVersionGL()
+LS_HAROLD_API LS_String LS_WindowGetVersionGL()
 {
   return gWindowData.versionGL;
 }
 
 
 // IsApplicationRunning
-HAROLD_API bool IsApplicationRunning()
+LS_HAROLD_API bool LS_IsApplicationRunning()
 {
   return gWindowData.isRunning;
 }
 
 
 // SetApplicationRunning
-HAROLD_API void SetApplicationRunning(bool running)
+LS_HAROLD_API void LS_SetApplicationRunning(bool running)
 {
   gWindowData.isRunning = running;
 }
 
 
 // LogCurrentWindowsVersion
-HAROLD_API void LogCurrentWindowVersion(void)
+LS_HAROLD_API void LS_LogCurrentWindowVersion(void)
 {
   // DPI Awareness is set in the Application Manifest
   u8* RegKey = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion";
@@ -167,13 +167,13 @@ HAROLD_API void LogCurrentWindowVersion(void)
 void WindowSetData()
 {
   gWindowData.window = 0;
-  gWindowData.title  = APP_NAME;
-  gWindowData.width  = APP_RESOLUTION_WIDTH;
-  gWindowData.height = APP_RESOLUTION_HEIGHT;
+  gWindowData.title  = LS_APP_NAME;
+  gWindowData.width  = LS_APP_RESOLUTION_WIDTH;
+  gWindowData.height = LS_APP_RESOLUTION_HEIGHT;
   gWindowData.major  = 3;
   gWindowData.minor  = 3;
-  gWindowData.viewportWidth  = APP_RESOLUTION_WIDTH;
-  gWindowData.viewportHeight = APP_RESOLUTION_HEIGHT;
+  gWindowData.viewportWidth  = LS_APP_RESOLUTION_WIDTH;
+  gWindowData.viewportHeight = LS_APP_RESOLUTION_HEIGHT;
   gWindowData.fullscreen = false;
   gWindowData.isRunning = true;
   gWindowData.multiRun = false;
@@ -184,13 +184,13 @@ void WindowSetData()
 // c_glGetString
 void c_glGetString()
 {
-  const string VendorGL = (string)(const u8*)glGetString(GL_VENDOR);
-  const string RenderGL = (string)(const u8*)glGetString(GL_RENDERER);
-  const string VersionGL = (string)(const u8*)glGetString(GL_VERSION);
+  const LS_String VendorGL  = (LS_String)(const u8*)glGetString(GL_VENDOR);
+  const LS_String RenderGL  = (LS_String)(const u8*)glGetString(GL_RENDERER);
+  const LS_String VersionGL = (LS_String)(const u8*)glGetString(GL_VERSION);
   
-  gWindowData.vendorGL = (string)malloc(strlen(VendorGL) + 1);
-  gWindowData.renderGL = (string)malloc(strlen(RenderGL) + 1);
-  gWindowData.versionGL = (string)malloc(strlen(VersionGL) + 1);
+  gWindowData.vendorGL  = (LS_String)malloc(strlen(VendorGL) + 1);
+  gWindowData.renderGL  = (LS_String)malloc(strlen(RenderGL) + 1);
+  gWindowData.versionGL = (LS_String)malloc(strlen(VersionGL) + 1);
   
   strcpy(gWindowData.vendorGL, VendorGL);
   strcpy(gWindowData.renderGL, RenderGL);
@@ -220,7 +220,7 @@ i32 CreateMainWindow(void)
   WindowClass.hCursor = LoadCursorA(NULL, IDC_ARROW);
   WindowClass.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
   WindowClass.lpszMenuName = NULL;
-  WindowClass.lpszClassName = APP_NAME "_WINDOWCLASS";
+  WindowClass.lpszClassName = LS_APP_NAME "_WINDOWCLASS";
   
   if (RegisterClassExA(&WindowClass) == 0)
   {
@@ -335,7 +335,7 @@ i32 CreateWindowGlContext(void)
     goto Exit;
   }
   
-  glViewport(0, 0, APP_RESOLUTION_WIDTH, APP_RESOLUTION_HEIGHT);
+  glViewport(0, 0, LS_APP_RESOLUTION_WIDTH, LS_APP_RESOLUTION_HEIGHT);
   
   c_glGetString();
   printf("Vendor:  %s\n", gWindowData.vendorGL);
@@ -355,7 +355,7 @@ bool IsAlreadyRunning(void)
   if (!gWindowData.multiRun)
   {
     HANDLE Mutex = NULL;
-    Mutex = CreateMutexA(NULL, false, APP_NAME "_GameMutex");
+    Mutex = CreateMutexA(NULL, false, LS_APP_NAME "_GameMutex");
     if (GetLastError() == ERROR_ALREADY_EXISTS) Result = true;
   }
   return Result;
