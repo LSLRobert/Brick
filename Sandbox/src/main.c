@@ -10,9 +10,9 @@ int main(int argc, char** argv)
   printf("Welcome to the Sandbox\n");
   
   // window
-  WindowSetVersionGL(3, 3);
-  WindowSetViewport(400, 300);
-  Window window = WindowCreateGL("App Name", 800, 600, false);
+  LS_WindowSetVersionGL(3, 3);
+  LS_WindowSetViewport(400, 300);
+  LS_Window window = LS_WindowCreateGL("App Name", 800, 600, false);
   if (!window) 
   {
     // TODO: LOG ERROR
@@ -21,22 +21,22 @@ int main(int argc, char** argv)
   }
   
   // Log
-  LogCurrentWindowVersion();
+  LS_LogCurrentWindowVersion();
   
   // Event Queue
-  Event event;
+  LS_Event event;
   
   // game loop
-  while (IsApplicationRunning())
+  while (LS_IsApplicationRunning())
   {
-    while (PollEvent(&event))
+    while (LS_PollEvent(&event))
     {
       switch (event.type)
       {
 //        case MSG_CLOSE:
 //        case MSG_QUIT:
 //        {
-//          SetApplicationRunning(false);
+//          LS_SetApplicationRunning(false);
 //          break;
 //        }
         
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     } // PollEvent
     
     
-    RenderFrameGraphics();
+    LS_RenderFrameGraphics();
     
     
     // temp solution

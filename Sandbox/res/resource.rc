@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "resource.h"
+#include "version.h"
 
 // https://www.transmissionzero.co.uk/computing/win32-apps-with-mingw/
 
@@ -10,9 +11,12 @@ IDI_APPICON   ICON    "Application.ico"
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST    "Application.manifest"
 
 // Executable version information.
+#ifndef RESVERSION
+#define RESVERSION  1,0,0,0
+#endif // RESVERSION
 VS_VERSION_INFO     VERSIONINFO
-FILEVERSION         1,0,0,0
-PRODUCTVERSION      1,0,0,0
+FILEVERSION         RESVERSION
+PRODUCTVERSION      RESVERSION
 #define COMPANYNAME         "Last Straw Labs, Inc."
 #define APPNAME             "Harold"
 

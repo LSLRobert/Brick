@@ -1,4 +1,5 @@
-@echo off & setlocal enabledelayedexpansion
+@echo off
+setlocal enabledelayedexpansion
 :folder
 if not exist bin mkdir bin
 if not exist obj mkdir obj
@@ -47,15 +48,15 @@ set /a "_loop=!_mm! * 6"
 for /l %%d in (0 6 !_loop!) do set "_sum=!_mm_dd_year_:~%%d,5!" && (
   if "9!_sum:~,2!" lss "9!_mm!" set /a "_day_year_+=!_sum:~-2!"
 )
-set /a "_day_year_+=!_dd!"
-set /a "_remain=!_day_year_! - !_year_!"
+:: set /a "_day_year_+=!_dd!"
+:: set /a "_remain=!_day_year_! - !_year_!"
 :: echo/Today: !_date! ^| Day of Year: !_day_year_! ^| Days Remaining: !_remain:-=!
 
 :version
 :: Major Version set by Developer
 set VMAJ=0
 set VMID=%date:~-2%
-set VMIN=!_day_year_!
+set VMIN=%_day_year_%
 set /p VBUILD=<version/vbuild.inf
 
 echo %VMAJ% >version/vmaj.inf
@@ -65,6 +66,8 @@ set /a VBUILD=%VBUILD%+1
 echo %VBUILD% >version/vbuild.inf
 
 echo Version %VMAJ%.%VMID%.%VMIN%.%VBUILD% %NAME%
+call version/resversion.bat
+move/y version.h ./res > nul 2>&1 
 
 :flags
 :: -O0 / -O3 -g3 : Release / Debug
