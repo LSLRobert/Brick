@@ -9,8 +9,9 @@ set /p NAME=<name.bat
 
 :file_list
 set MAIN=.\src\main.c
+set ARRAY=.\src\array\array.c
 
-set FILES=%MAIN%
+set FILES=%MAIN% %ARRAY%
 
 :library
 set Library=D:\Projects\Engine\Harold\bin\harlold.dll

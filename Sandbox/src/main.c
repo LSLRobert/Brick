@@ -1,10 +1,17 @@
-// c includes
-#include <stdio.h>
-
-// engine includes
+////////////////////////////////////////////////////////////
+//
+// Last Straw Labs, Inc.
+// www.laststrawlabs.com
+// July 1, 2022
+//
+////////////////////////////////////////////////////////////
 #include <harold.h>
+#include "main.h"
 
+
+///////////////////////////
 // main
+///////////////////////////
 int main(int argc, char** argv)
 {
   printf("Welcome to the Sandbox\n");
@@ -25,6 +32,9 @@ int main(int argc, char** argv)
   
   // Event Queue
   LS_Event event;
+  
+  // test the array class
+  test_main();
   
   // game loop
   while (LS_IsApplicationRunning())
@@ -60,3 +70,8 @@ Exit:
   
   return 0;
 }
+
+
+///////////////////////////
+// EOF
+///////////////////////////
