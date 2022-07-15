@@ -22,13 +22,15 @@ typedef struct list
   void* items;
 } list;
 
-
 // declaration
-void* list_add(struct list *list, void* item);
-void list_rm(struct list *list, void* item);
 struct list* list_new(size_t size);
-void list_free(struct list* list);
+void   list_free(struct list* list);
 
+void* list_add(struct list* list, void* item);
+void  list_rm(struct list* list, void* item);
+
+void* list_get(struct list* list, int item);
+void* list_set(struct list* list, int num, void* item);
 
 // testing
 void test_main();

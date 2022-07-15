@@ -35,7 +35,7 @@ void list_free(struct list* list)
 
 
 // list_add
-void* list_add(struct list *list, void* item)
+void* list_add(struct list* list, void* item)
 {
   char* pos = NULL;
   
@@ -71,7 +71,7 @@ void* list_add(struct list *list, void* item)
 
 
 // list_rm
-void list_rm(struct list *list, void* item)
+void list_rm(struct list* list, void* item)
 {
   char* pos = (char*)list->items;
   size_t tail_size = 0;
@@ -92,7 +92,7 @@ void list_rm(struct list *list, void* item)
     pos += list->isize;
   }
   
-  if (list->max > list->count*2)
+  if (list->max > list->count * 2)
   {
     size_t size = list->isize * (list->max / 2);
     void* items = realloc(list->items, size);
@@ -108,6 +108,37 @@ void list_rm(struct list *list, void* item)
 }
 
 
+// list_get
+void* list_get(struct list* list, int num)
+{
+  char* pos = NULL;
+  if (num < 0 && num >= list->count)
+  {
+    printf("Array list out of bounds! Requesting: %d from %d\n", num + 1, list->count);
+    exit(EXIT_FAILURE);
+  }
+  pos = (char*)(list->items + (list->isize * num));
+  return pos;
+}
+
+
+// list_set
+void* list_set(struct list* list, int num, void* item)
+{
+  char* pos = NULL;
+  if (num < 0 && num >= list->count)
+  {
+    printf("Array list out of bounds! Requesting: %d from %d\n", num + 1, list->count);
+    exit(EXIT_FAILURE);
+  }
+  pos = (char*)(list->items + (list->isize * num));
+  if (memcpy(pos, item, list->isize) == NULL)
+  {
+    puts("memccpy failed!");
+    exit(EXIT_FAILURE);
+  }
+  return pos;
+}
 
 ///////////////////////////
 // testing
@@ -121,12 +152,12 @@ typedef struct vec3
 } vec3;
 
 // print
-void print(struct list *list)
+void print(struct list* list)
 {
   for (int i=0; i < list->count; i++)
   {
-    vec3 me_print = *((vec3*)list->items+i);
-    printf("%d -> ( %.1f, %.1f, %.1f )\n", i, me_print.x, me_print.y, me_print.z);
+    vec3* me_print = list_get(list, i);
+    printf("%d -> ( %.1f, %.1f, %.1f )\n", i, me_print->x, me_print->y, me_print->z);
   }
   printf("max:   %d\n", list->max);
   printf("count: %d\n", list->count);
@@ -153,9 +184,22 @@ void test_main()
   list_add(list, &c);
   list_add(list, &d);
   list_add(list, &e);
-  list_add(list, &f);
+  vec3* test5 = list_add(list, &f);
   list_add(list, &g);
   list_add(list, &h );
+  
+  print(list);
+  
+  // pointer from list_add
+  printf("pointer: ( %.1f, %.1f, %.1f )\n", test5->x, test5->y, test5->z);
+  
+  // pointer list_get
+  vec3* get_print = list_get(list, 5);
+  printf("get: ( %.1f, %.1f, %.1f )\n", get_print->x, get_print->y, get_print->z);
+  
+  // list_set test
+  vec3 tens = { -10.0, -10.0, -10.0 };
+  list_set(list, 4, &tens);
   
   print(list);
   
