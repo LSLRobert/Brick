@@ -2,26 +2,16 @@
 //
 // Last Straw Labs, Inc.
 // www.laststrawlabs.com
-// July 5, 2022
+// July 17, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef LS_EVENT32_H
-#define LS_EVENT32_H
+#ifndef LS_ARRAY_INT_H
+#define LS_ARRAY_INT_H
+#include "array.h"
 
 
-// Structures
-typedef struct LS_Event
-{
-  i32 type;
-  
-} LS_Event;
+#endif // LS_ARRAY_INT_H
 
-
-// Declaration
-LS_HAROLD_API bool LS_PollEvent(LS_Event* event);
-
-
-#endif // LS_EVENT32_H
 
 ///////////////////////////
 // EOF

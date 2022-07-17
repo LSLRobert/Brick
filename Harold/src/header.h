@@ -24,9 +24,10 @@
   #include "glad/glad.h"
   
   #include "main.h"
-  #include "window/win32.h"
-  #include "event/event32.h"
-  #include "render/rendergl.h"
+  #include "window/win32_int.h"
+  #include "array/array_int.h"
+  #include "event/event32_int.h"
+  #include "render/rendergl_int.h"
   
 #else // LS_PLATFORM_WINDOWS
   

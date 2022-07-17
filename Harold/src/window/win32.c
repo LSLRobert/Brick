@@ -6,7 +6,7 @@
 //
 ////////////////////////////////////////////////////////////
 #include "header.h"
-#include "win32.h"
+#include "win32_int.h"
 
 
 // WindowSetViewport

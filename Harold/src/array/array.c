@@ -2,18 +2,15 @@
 //
 // Last Straw Labs, Inc.
 // www.laststrawlabs.com
-// July 9, 2022
-//
-// Array Backed List
-// https://www.youtube.com/watch?v=-2CYCHLZXD4
+// July 17, 2022
 //
 ////////////////////////////////////////////////////////////
-#include <harold.h>
-#include "array.h"
+#include "header.h"
+#include "array_int.h"
 
 
 // list_new
-LS_List list_new(size_t size)
+LS_List LS_ListNew(uSize size)
 {
   LS_List list = malloc(sizeof(struct LS_List_));
   list->isize = size;
@@ -24,7 +21,7 @@ LS_List list_new(size_t size)
 
 
 // list_free
-void list_free(LS_List list)
+void LS_ListFree(LS_List list)
 {
   if (list->count > 0)
   {
@@ -35,7 +32,7 @@ void list_free(LS_List list)
 
 
 // list_add
-void* list_add(LS_List list, void* item)
+void* LS_ListAdd(LS_List list, void* item)
 {
   char* pos = NULL;
   
@@ -71,7 +68,7 @@ void* list_add(LS_List list, void* item)
 
 
 // list_rm
-void list_rm(LS_List list, void* item)
+void LS_ListRm(LS_List list, void* item)
 {
   char* pos = (char*)list->items;
   size_t tail_size = 0;
@@ -107,8 +104,15 @@ void list_rm(LS_List list, void* item)
 }
 
 
+// list_remove
+void LS_ListRemove(LS_List list, void* item)
+{
+  LS_ListRm(list, item);
+}
+
+
 // list_get
-void* list_get(LS_List list, int num)
+void* LS_ListGet(LS_List list, i32 num)
 {
   char* pos = NULL;
   if (num < 0 && num >= list->count)
@@ -122,7 +126,7 @@ void* list_get(LS_List list, int num)
 
 
 // list_set
-void* list_set(LS_List list, int num, void* item)
+void* LS_ListSet(LS_List list, i32 num, void* item)
 {
   char* pos = NULL;
   if (num < 0 && num >= list->count)
@@ -139,79 +143,6 @@ void* list_set(LS_List list, int num, void* item)
   return pos;
 }
 
-///////////////////////////
-// testing
-///////////////////////////
-// TEST:: struct
-typedef struct vec3
-{
-  float x;
-  float y;
-  float z;
-} vec3;
-
-// print
-void print(LS_List list)
-{
-  for (int i=0; i < list->count; i++)
-  {
-    vec3* me_print = list_get(list, i);
-    printf("%d -> ( %.1f, %.1f, %.1f )\n", i, me_print->x, me_print->y, me_print->z);
-  }
-  printf("max:   %d\n", list->max);
-  printf("count: %d\n", list->count);
-  puts("...\n");
-}
-
-// test_main
-void test_main()
-{
-  puts("\nTesting Array\n");
-  
-  LS_List list = list_new(sizeof(vec3));
-  vec3 a = {  0.5,  0.5,  0.5 };
-  vec3 b = {  0.5, -0.5,  0.5 };
-  vec3 c = { -0.5, -0.5,  0.5 };
-  vec3 d = { -0.5,  0.5,  0.5 };
-  vec3 e = {  0.5,  0.5, -0.5 };
-  vec3 f = {  0.5, -0.5, -0.5 };
-  vec3 g = { -0.5, -0.5, -0.5 };
-  vec3 h = { -0.5,  0.5, -0.5 };
-  
-  list_add(list, &a);
-  list_add(list, &b);
-  list_add(list, &c);
-  list_add(list, &d);
-  list_add(list, &e);
-  vec3* test5 = list_add(list, &f);
-  list_add(list, &g);
-  list_add(list, &h );
-  
-  print(list);
-  
-  // pointer from list_add
-  printf("pointer: ( %.1f, %.1f, %.1f )\n", test5->x, test5->y, test5->z);
-  
-  // pointer list_get
-  vec3* get_print = list_get(list, 5);
-  printf("get: ( %.1f, %.1f, %.1f )\n", get_print->x, get_print->y, get_print->z);
-  
-  // list_set test
-  vec3 tens = { -10.0, -10.0, -10.0 };
-  list_set(list, 4, &tens);
-  
-  print(list);
-
-//list_rm(list, &c);
-//print(list);
-//list_rm(list, &d);
-//print(list);
-//list_add(list, &a);
-//list_add(list, &b);
-//print(list);
-  
-  puts("END -- Testing Array\n");
-}
 
 ///////////////////////////
 // EOF

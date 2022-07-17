@@ -8,53 +8,26 @@
 #ifndef LS_WIN32_H
 #define LS_WIN32_H
 
-// Structures
-typedef struct MainArgs
-{
-  HINSTANCE hInstance;
-  HINSTANCE hPrevInstance;
-  PSTR lpCmdLine;
-  INT nCmdShow;
-  
-} MainArgs;
+// fields
+typedef void* LS_Window;
 
-typedef struct WindowData // non Platform
-{
-  LS_Window window;
-  LS_Window deviceContext;
-  LS_Window resourceGL;
-  LS_String title;
-  i32 width;
-  i32 height;
-  i32 major;
-  i32 minor;
-  i32 viewportWidth;
-  i32 viewportHeight;
-  i32 monitorWidth;
-  i32 monitorHeight;
-  bool fullscreen;
-  bool isRunning;
-  bool multiRun;
-  bool windowSet;
-  LS_String vendorGL;
-  LS_String renderGL;
-  LS_String versionGL;
-  
-} WindowData;
+LS_HAROLD_API void      LS_WindowSetViewport(i32 width, i32 height);
+LS_HAROLD_API i32       LS_WindowGetViewportWidth();
+LS_HAROLD_API i32       LS_WindowGetViewportHeight();
 
-// Global Variables
-MainArgs gMainArgs;
-WindowData gWindowData;
+LS_HAROLD_API LS_Window LS_WindowCreateGL(LS_String title, i32 width, i32 height, bool fullscreen);
 
-// Internal
-void WindowSetData();
-void c_glGetString();
-i32 CreateMainWindow(void);
-i32 CreateWindowGlContext(void);
-bool IsAlreadyRunning(void);
-LSTATUS GetRegKeyValue(u8* BufferData, HKEY hkey, u8* RegKey, u8* Key);
-LRESULT CALLBACK MainWindowProcedures(HWND WindowHandle, UINT Message, WPARAM WParam, LPARAM LParam);
-HDC GetDeviceContext();
+LS_HAROLD_API void      LS_WindowSetVersionGL(i32 major, i32 minor);
+LS_HAROLD_API i32       LS_WindowGetVersionGLMajor();
+LS_HAROLD_API i32       LS_WindowGetVersionGLMinor();
+
+LS_HAROLD_API LS_String LS_WindowGetVendorGL();
+LS_HAROLD_API LS_String LS_WindowGetRenderGL();
+LS_HAROLD_API LS_String LS_WindowGetVersionGL();
+
+LS_HAROLD_API bool      LS_IsApplicationRunning();
+LS_HAROLD_API void      LS_SetApplicationRunning(bool running);
+LS_HAROLD_API void      LS_LogCurrentWindowVersion(void);
 
 #endif // LS_WIN32_H
 

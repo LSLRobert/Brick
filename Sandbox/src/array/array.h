@@ -14,23 +14,24 @@
 
 
 // structure
-typedef struct list
+typedef struct LS_List_ // list
 {
   int count;
   int max;
   size_t isize;
   void* items;
-} list;
+} LS_List_, *LS_List;
+//} list;
 
 // declaration
-struct list* list_new(size_t size);
-void   list_free(struct list* list);
+LS_List list_new(size_t size);
+void list_free(LS_List list);
 
-void* list_add(struct list* list, void* item);
-void  list_rm(struct list* list, void* item);
+void* list_add(LS_List list, void* item);
+void  list_rm(LS_List list, void* item);
 
-void* list_get(struct list* list, int item);
-void* list_set(struct list* list, int num, void* item);
+void* list_get(LS_List list, int num);
+void* list_set(LS_List list, int num, void* item);
 
 // testing
 void test_main();

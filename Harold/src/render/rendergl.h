@@ -5,20 +5,15 @@
 // July 5, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef RENDERGL_H
-#define RENDERGL_H
+#ifndef LS_RENDERGL_H
+#define LS_RENDERGL_H
 
 
-// Structures
+// Declaration
+LS_HAROLD_API void LS_RenderFrameGraphics(void);
 
 
-// Global Variables
-
-
-// Internal
-
-
-#endif // RENDERGL_H
+#endif // LS_RENDERGL_H
 
 ///////////////////////////
 // EOF

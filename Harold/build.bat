@@ -11,12 +11,13 @@ set /p NAME=<name.bat
 set MAIN=.\src\main.c
 set WIND=.\src\window\win32.c
 set GLAD=.\src\glad\glad.c
+set ARRAY=.\src\array\array.c
 set EVENT=.\src\event\event32.c
 set RENDER=.\src\render\rendergl.c
 
 
 
-set FILES=%MAIN% %WIND% %GLAD% %EVENT% %RENDER%
+set FILES=%MAIN% %WIND% %GLAD% %ARRAY% %EVENT% %RENDER%
 
 :library
 set Library=-lgdi32 -lopengl32

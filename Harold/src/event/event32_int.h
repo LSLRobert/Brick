@@ -5,23 +5,12 @@
 // July 5, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef LS_EVENT32_H
-#define LS_EVENT32_H
+#ifndef LS_EVENT32_INT_H
+#define LS_EVENT32_INT_H
+#include "event32.h"
 
 
-// Structures
-typedef struct LS_Event
-{
-  i32 type;
-  
-} LS_Event;
-
-
-// Declaration
-LS_HAROLD_API bool LS_PollEvent(LS_Event* event);
-
-
-#endif // LS_EVENT32_H
+#endif // LS_EVENT32_INT_H
 
 ///////////////////////////
 // EOF

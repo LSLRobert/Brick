@@ -6,13 +6,7 @@
 //
 ////////////////////////////////////////////////////////////
 #include "header.h"
-#include "event32.h"
-
-
-// Structures
-
-
-// Global Variables
+#include "event32_int.h"
 
 
 // PollEvent

@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 // includes
-#include "array/array.h"
+//#include "array/array.h"
 
 
 #endif // MAIN_H

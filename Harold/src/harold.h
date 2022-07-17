@@ -16,6 +16,8 @@
 // c includes
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 // c types
 typedef uint32_t  u32;
@@ -30,6 +32,7 @@ typedef int32_t   bool;
 typedef uint8_t*  LS_String;
 typedef uint64_t  u64;
 typedef int64_t   i64;
+typedef size_t    uSize;
 
 // current platform
 #define LS_PLATFORM_WINDOWS
@@ -46,18 +49,12 @@ typedef int64_t   i64;
 #endif
 
 
-// fields
-typedef void* LS_Window;
-
-typedef struct LS_Event
-{
-  i32 type;
-  
-} LS_Event;
-
 ///////////////////////////
-// Window - win32.h
+// Window - win 32 x64
 ///////////////////////////
+#include "window/win32.h"
+
+// Declaration
 LS_HAROLD_API void      LS_WindowSetViewport(i32 width, i32 height);
 LS_HAROLD_API i32       LS_WindowGetViewportWidth();
 LS_HAROLD_API i32       LS_WindowGetViewportHeight();
@@ -76,16 +73,39 @@ LS_HAROLD_API bool      LS_IsApplicationRunning();
 LS_HAROLD_API void      LS_SetApplicationRunning(bool running);
 LS_HAROLD_API void      LS_LogCurrentWindowVersion(void);
 
+
 ///////////////////////////
-// Event - event32.h
+// Array and ArrayList
 ///////////////////////////
-LS_HAROLD_API bool      LS_PollEvent(LS_Event* event);
+#include "array/array.h"
+
+// Declaration
+LS_HAROLD_API LS_List LS_ListNew(uSize size);
+LS_HAROLD_API void LS_ListFree(LS_List list);
+
+LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item);
+LS_HAROLD_API void LS_ListRm(LS_List list, void* item);
+LS_HAROLD_API void LS_ListRemove(LS_List list, void* item);
+
+LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num);
+LS_HAROLD_API void* LS_ListSet(LS_List list, i32 num, void* item);
 
 
 ///////////////////////////
-// Render - rendergl.h
+// Event
 ///////////////////////////
-LS_HAROLD_API void      LS_RenderFrameGraphics(void);
+#include "event/event32.h"
+
+// Declaration
+LS_HAROLD_API bool LS_PollEvent(LS_Event* event);
+
+
+///////////////////////////
+// Render
+///////////////////////////
+#include "render/rendergl.h"
+
+LS_HAROLD_API void LS_RenderFrameGraphics(void);
 
 
 #endif // LS_HAROLD_H
