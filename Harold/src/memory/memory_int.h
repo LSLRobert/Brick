@@ -2,21 +2,15 @@
 //
 // Last Straw Labs, Inc.
 // www.laststrawlabs.com
-// July 1, 2022
+// July 17, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MEMORY_INT_H
+#define MEMORY_INT_H
+#include "memory.h"
 
 
-// c includes
-#include <stdio.h>
-
-// includes
-//#include "memory/memory.h"
-
-
-#endif // MAIN_H
+#endif // MEMORY_INT_H
 
 
 ///////////////////////////

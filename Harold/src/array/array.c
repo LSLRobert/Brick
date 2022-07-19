@@ -10,9 +10,10 @@
 
 
 // list_new
-LS_List LS_ListNew(uSize size)
+LS_HAROLD_API LS_List LS_ListNew(uSize size)
 {
-  LS_List list = malloc(sizeof(struct LS_List_));
+//  LS_List list = malloc(sizeof(struct LS_List_));
+  LS_List list = LS_Malloc(NULL, sizeof(struct LS_List_));
   list->isize = size;
   list->count = 0;
   list->max = 0;
@@ -21,30 +22,34 @@ LS_List LS_ListNew(uSize size)
 
 
 // list_free
-void LS_ListFree(LS_List list)
+LS_HAROLD_API void LS_ListFree(LS_List list)
 {
   if (list->count > 0)
   {
-    free(list->items);
+//    free(list->items);
+    LS_Free(NULL, list->items);
   }
-  free(list);
+//  free(list);
+  LS_Free(NULL, list);
 }
 
 
 // list_add
-void* LS_ListAdd(LS_List list, void* item)
+LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item)
 {
   char* pos = NULL;
   
   if (list->items == NULL)
   {
-    list->items = malloc(list->isize);
+//    list->items = malloc(list->isize);
+    list->items = LS_Malloc(NULL, list->isize);
     list->max = 1;
   }
   else if (list->count == list->max)
   {
     size_t size = list->isize * list->max * 2;
-    void* items = realloc(list->items, size);
+//    void* items = realloc(list->items, size);
+    void* items = LS_Realloc(NULL, list->items, size);
     if (items == NULL)
     {
       puts("realloc failed!");
@@ -68,7 +73,7 @@ void* LS_ListAdd(LS_List list, void* item)
 
 
 // list_rm
-void LS_ListRm(LS_List list, void* item)
+LS_HAROLD_API void LS_ListRm(LS_List list, void* item)
 {
   char* pos = (char*)list->items;
   size_t tail_size = 0;
@@ -92,7 +97,8 @@ void LS_ListRm(LS_List list, void* item)
   if (list->max > list->count * 2)
   {
     size_t size = list->isize * (list->max / 2);
-    void* items = realloc(list->items, size);
+//    void* items = realloc(list->items, size);
+    void* items = LS_Realloc(NULL, list->items, size);
     if (items == NULL)
     {
       puts("realloc failed!");
@@ -105,14 +111,14 @@ void LS_ListRm(LS_List list, void* item)
 
 
 // list_remove
-void LS_ListRemove(LS_List list, void* item)
+LS_HAROLD_API void LS_ListRemove(LS_List list, void* item)
 {
   LS_ListRm(list, item);
 }
 
 
 // list_get
-void* LS_ListGet(LS_List list, i32 num)
+LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num)
 {
   char* pos = NULL;
   if (num < 0 && num >= list->count)
@@ -126,7 +132,7 @@ void* LS_ListGet(LS_List list, i32 num)
 
 
 // list_set
-void* LS_ListSet(LS_List list, i32 num, void* item)
+LS_HAROLD_API void* LS_ListSet(LS_List list, i32 num, void* item)
 {
   char* pos = NULL;
   if (num < 0 && num >= list->count)

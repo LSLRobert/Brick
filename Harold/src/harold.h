@@ -20,6 +20,8 @@
 #include <string.h>
 
 // c types
+typedef uint64_t  u64;
+typedef int64_t   i64;
 typedef uint32_t  u32;
 typedef int32_t   i32;
 typedef uint16_t  u16;
@@ -28,10 +30,8 @@ typedef uint8_t   u8;
 typedef int8_t    i8;
 typedef double    f64;
 typedef float     f32;
-typedef int32_t   bool;
 typedef uint8_t*  LS_String;
-typedef uint64_t  u64;
-typedef int64_t   i64;
+typedef int32_t   bool;
 typedef size_t    uSize;
 
 // current platform
@@ -72,6 +72,23 @@ LS_HAROLD_API LS_String LS_WindowGetVersionGL();
 LS_HAROLD_API bool      LS_IsApplicationRunning();
 LS_HAROLD_API void      LS_SetApplicationRunning(bool running);
 LS_HAROLD_API void      LS_LogCurrentWindowVersion(void);
+
+
+///////////////////////////
+// Memory Manager
+///////////////////////////
+#include "memory/memory.h"
+
+LS_HAROLD_API LS_Memory LS_MemoryNew(uSize sizeBytes);
+LS_HAROLD_API void LS_MemoryFree(LS_Memory address);
+
+LS_HAROLD_API void* LS_Malloc(LS_Memory address, uSize size);
+LS_HAROLD_API void* LS_Calloc(LS_Memory address, uSize  numItems, uSize sizeItems);
+LS_HAROLD_API void* LS_Realloc(LS_Memory address, void* memory, uSize sizeNew);
+LS_HAROLD_API void LS_Free(LS_Memory address, void* memory);
+
+LS_HAROLD_API void LS_MemoryDisplay(LS_Memory address);
+LS_HAROLD_API void LS_MemoryPrint(LS_Memory address);
 
 
 ///////////////////////////
