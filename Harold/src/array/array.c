@@ -9,11 +9,25 @@
 #include "array_int.h"
 
 
+// list_new_null
+LS_HAROLD_API LS_List LS_ListNew_n(uSize size)
+{
+  return LS_ListNew(NULL, size);
+}
+
+
+// list_free_null
+LS_HAROLD_API void LS_ListFree_n(LS_List list)
+{
+  LS_ListFree(NULL, list);
+}
+
+
 // list_new
-LS_HAROLD_API LS_List LS_ListNew(uSize size)
+LS_HAROLD_API LS_List LS_ListNew(void* memory, uSize size)
 {
 //  LS_List list = malloc(sizeof(struct LS_List_));
-  LS_List list = LS_Malloc(NULL, sizeof(struct LS_List_));
+  LS_List list = LS_Malloc(memory, sizeof(struct LS_List_));
   list->isize = size;
   list->count = 0;
   list->max = 0;
@@ -22,15 +36,15 @@ LS_HAROLD_API LS_List LS_ListNew(uSize size)
 
 
 // list_free
-LS_HAROLD_API void LS_ListFree(LS_List list)
+LS_HAROLD_API void LS_ListFree(void* memory, LS_List list)
 {
   if (list->count > 0)
   {
 //    free(list->items);
-    LS_Free(NULL, list->items);
+    LS_Free(memory, list->items);
   }
 //  free(list);
-  LS_Free(NULL, list);
+  LS_Free(memory, list);
 }
 
 

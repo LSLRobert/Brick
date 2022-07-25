@@ -19,8 +19,11 @@ typedef struct LS_List_
 } LS_List_, *LS_List;
 
 // Declaration
-LS_HAROLD_API LS_List LS_ListNew(uSize size);
-LS_HAROLD_API void LS_ListFree(LS_List list);
+LS_HAROLD_API LS_List LS_ListNew_n(uSize size);
+LS_HAROLD_API void LS_ListFree_n(LS_List list);
+
+LS_HAROLD_API LS_List LS_ListNew(void* memory, uSize size);
+LS_HAROLD_API void LS_ListFree(void* memory, LS_List list);
 
 LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item);
 LS_HAROLD_API void LS_ListRm(LS_List list, void* item);

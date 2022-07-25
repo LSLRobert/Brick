@@ -9,6 +9,9 @@
 #include "main.h"
 
 
+// Testing
+#include "memory.c"
+
 ///////////////////////////
 // TEST:: struct
 ///////////////////////////
@@ -32,13 +35,31 @@ void print(LS_List list)
   puts("...\n");
 }
 
+
+#define Kilobyte (1024)
+#define Megabyte (1024 * 1024)
+#define Gigabyte (1024 * 1024 * 1024)
+
 // test_init
 void test_init()
 {
-//  test_main();
+  test_main();
+  
+  /////////////////////////////////////
+  
+  void* my_memory = NULL;
+//  puts("\nSTART -- Testing get MEMORY\n");
+//  
+//  LS_Memory my_memory = LS_MemoryNew(4 * Megabyte);
+//  printf("Memory: %p\n", my_memory);
+//  
+//  puts("END -- Testing get MEMORY\n");
+  
+  /////////////////////////////////////
+  
   puts("\nSTART -- Testing Array\n");
   
-  LS_List my_list = LS_ListNew(sizeof(vec3));
+  LS_List my_list = LS_ListNew(my_memory, sizeof(vec3));
   vec3 a = {  0.5,  0.5,  0.5 };
   vec3 b = {  0.5, -0.5,  0.5 };
   vec3 c = { -0.5, -0.5,  0.5 };
@@ -73,8 +94,20 @@ void test_init()
   
   print(my_list);
   
+  LS_ListFree(my_memory, my_list);
   
   puts("END -- Testing Array\n");
+  
+  /////////////////////////////////////
+  
+//  puts("\nSTART -- Testing free MEMORY\n");
+//  
+//  LS_MemoryFree(my_memory);
+//  
+//  puts("END -- Testing free MEMORY\n");
+  
+  /////////////////////////////////////
+  
 }
 
 // test_loop
