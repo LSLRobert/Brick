@@ -15,20 +15,16 @@ typedef struct LS_List_
   int count;
   int max;
   size_t isize;
+  LS_Memory arena;
   void* items;
 } LS_List_, *LS_List;
 
 // Declaration
-LS_HAROLD_API LS_List LS_ListNew_n(uSize size);
-LS_HAROLD_API void LS_ListFree_n(LS_List list);
-
-LS_HAROLD_API LS_List LS_ListNew(void* memory, uSize size);
-LS_HAROLD_API void LS_ListFree(void* memory, LS_List list);
-
+LS_HAROLD_API LS_List LS_ListNew(LS_Memory arena, uSize size);
+LS_HAROLD_API void LS_ListFree(LS_List list);
 LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item);
 LS_HAROLD_API void LS_ListRm(LS_List list, void* item);
 LS_HAROLD_API void LS_ListRemove(LS_List list, void* item);
-
 LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num);
 LS_HAROLD_API void* LS_ListSet(LS_List list, i32 num, void* item);
 

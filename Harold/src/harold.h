@@ -13,6 +13,9 @@
 #define false   0
 #define true    1
 
+#define Assert(Expression) if(!Expression) *(int*)0=0;
+#define UNIMPLEMENTED printf("UNIMPLEMENTED: %d, %s, %s\n", __LINE__, __FILE__, __func__);
+
 // c includes
 #include <stdio.h>
 #include <stdint.h>
@@ -50,7 +53,7 @@ typedef size_t    uSize;
 
 
 ///////////////////////////
-// Window - win 32 x64
+// Window - win32_x64
 ///////////////////////////
 #include "window/win32.h"
 
@@ -75,44 +78,38 @@ LS_HAROLD_API void      LS_LogCurrentWindowVersion(void);
 
 
 ///////////////////////////
-// Memory Manager
+// Memory Manager - win32_x64
 ///////////////////////////
-#include "memory/memory.h"
+#include "memory/memory32.h"
 
+// Declaration
 LS_HAROLD_API LS_Memory LS_MemoryNew(uSize sizeBytes);
-LS_HAROLD_API void LS_MemoryFree(LS_Memory address);
-
-LS_HAROLD_API void* LS_Malloc(LS_Memory address, uSize size);
-LS_HAROLD_API void* LS_Calloc(LS_Memory address, uSize  numItems, uSize sizeItems);
-LS_HAROLD_API void* LS_Realloc(LS_Memory address, void* memory, uSize sizeNew);
-LS_HAROLD_API void LS_Free(LS_Memory address, void* memory);
-
-LS_HAROLD_API void LS_MemoryDisplay(LS_Memory address);
-LS_HAROLD_API void LS_MemoryPrint(LS_Memory address);
+LS_HAROLD_API void  LS_MemoryFree(LS_Memory arena);
+LS_HAROLD_API void* LS_Malloc(LS_Memory arena, uSize size);
+LS_HAROLD_API void* LS_Calloc(LS_Memory arena, uSize numItems, uSize sizeItems);
+LS_HAROLD_API void* LS_Realloc(LS_Memory arena, void* memory, uSize sizeNew);
+LS_HAROLD_API void  LS_Free(LS_Memory arena, void* memory);
+LS_HAROLD_API void  LS_MemoryDisplay(LS_Memory arena);
+LS_HAROLD_API void  LS_MemoryPrint(LS_Memory arena);
 
 
 ///////////////////////////
-// Array and ArrayList
+// Array and ArrayList - NON_Platform
 ///////////////////////////
 #include "array/array.h"
 
 // Declaration
-LS_HAROLD_API LS_List LS_ListNew_n(uSize size);
-LS_HAROLD_API void LS_ListFree_n(LS_List list);
-
-LS_HAROLD_API LS_List LS_ListNew(void* memory, uSize size);
-LS_HAROLD_API void LS_ListFree(void* memory, LS_List list);
-
+LS_HAROLD_API LS_List LS_ListNew(LS_Memory arena, uSize size);
+LS_HAROLD_API void LS_ListFree(LS_List list);
 LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item);
 LS_HAROLD_API void LS_ListRm(LS_List list, void* item);
 LS_HAROLD_API void LS_ListRemove(LS_List list, void* item);
-
 LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num);
 LS_HAROLD_API void* LS_ListSet(LS_List list, i32 num, void* item);
 
 
 ///////////////////////////
-// Event
+// Event - win32_x64
 ///////////////////////////
 #include "event/event32.h"
 

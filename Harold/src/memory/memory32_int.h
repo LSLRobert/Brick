@@ -5,12 +5,12 @@
 // July 17, 2022
 //
 ////////////////////////////////////////////////////////////
-#ifndef MEMORY_INT_H
-#define MEMORY_INT_H
-#include "memory.h"
+#ifndef MEMORY32_INT_H
+#define MEMORY32_INT_H
+#include "memory32.h"
 
 
-#endif // MEMORY_INT_H
+#endif // MEMORY32_INT_H
 
 
 ///////////////////////////

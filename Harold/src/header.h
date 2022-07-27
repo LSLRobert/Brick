@@ -25,11 +25,10 @@
   
   #include "main.h"
   #include "window/win32_int.h"
-  #include "array/array_int.h"
+  #include "memory/memory32_int.h"
   #include "event/event32_int.h"
-  #include "render/rendergl_int.h"
   
-#else // LS_PLATFORM_WINDOWS
+#else // OTHER_PLATFORMS
   
   // TODO: add other OS's
   // Apple
@@ -38,6 +37,10 @@
   // Web
   
 #endif // LS_PLATFORM_WINDOWS
+
+// NON_PLATFORM
+#include "array/array_int.h"
+#include "render/rendergl_int.h"
 
 #endif // LS_HEADER_H
 
