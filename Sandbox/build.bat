@@ -13,7 +13,7 @@ set MAIN=.\src\main.c
 set FILES=%MAIN%
 
 :library
-set Library=D:\Projects\Engine\Harold\bin\harlold.dll
+set Library=..\Harold\bin\harlold.dll
 
 :include
 set Include=-I ..\Harold\src\

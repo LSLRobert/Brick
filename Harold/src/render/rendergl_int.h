@@ -10,7 +10,7 @@
 #include "rendergl.h"
 
 
-#endif // LS_RENDERGL_INT_H
+#endif /* LS_RENDERGL_INT_H */
 
 ///////////////////////////
 // EOF

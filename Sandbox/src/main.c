@@ -13,30 +13,30 @@
 // Testing
 ///////////////////////////
 
-// testing includes
+/* testing includes */
 #include "test_memory.c"
-#include "test_array.c"
+ #include "test_array.c"
 
-// test_init
+/* test_init */
 void test_init()
 {
-  //
+  /*  */
   test_init_memory();
   test_init_array();
 }
 
-// test_loop
+/* test_loop */
 void test_loop()
 {
-  //
+  /*  */
   test_loop_memory();
   test_loop_array();
 }
 
-// test_exit
+/* test_exit */
 void test_exit()
 {
-  //
+  /*  */
   test_exit_memory();
   test_exit_array();
 }
@@ -48,10 +48,10 @@ int main(int argc, char** argv)
 {
   printf("Welcome to the Sandbox\n");
   
-  // window
-  LS_WindowSetVersionGL(3, 3);
-  LS_WindowSetViewport(400, 300);
-  LS_Window window = LS_WindowCreateGL("App Name", 800, 600, false);
+  /* window */
+  ls_window_set_version_gl(3, 3);
+  ls_window_set_viewport(400, 300);
+  ls_window window = ls_window_create_gl("App Name", 800, 600, false);
   if (!window) 
   {
     // TODO: LOG ERROR
@@ -59,26 +59,26 @@ int main(int argc, char** argv)
     goto Exit;
   }
   
-  // Log
-  LS_LogCurrentWindowVersion();
+  /* Log */
+  ls_log_current_windows_version();
   
-  // Event Queue
-  LS_Event event;
+  /* Event Queue */
+  ls_event event;
   
-  // test init before loop
+  /* test init before loop */
   test_init();
   
-  // game loop
-  while (LS_IsApplicationRunning())
+  /* game loop */
+  while (ls_is_application_running())
   {
-    while (LS_PollEvent(&event))
+    while (ls_poll_event(&event))
     {
       switch (event.type)
       {
 //        case MSG_CLOSE:
 //        case MSG_QUIT:
 //        {
-//          LS_SetApplicationRunning(false);
+//          ls_set_application_running(false);
 //          break;
 //        }
         
@@ -88,21 +88,21 @@ int main(int argc, char** argv)
         }
         
       }
-    } // PollEvent
+    } /* PollEvent */
     
-    // testing in loop
+    /* testing in loop */
     test_loop();
 
-    LS_RenderFrameGraphics();
+    ls_render_frame_graphics();
     
     
-    // temp solution
+    /* temp solution */
 //    Sleep(1);
   }
   
 Exit:
   
-  // testing at exit
+  /* testing at exit */
   test_exit();
   
   return 0;

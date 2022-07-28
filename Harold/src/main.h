@@ -17,7 +17,7 @@
 #define LS_APP_RESOLUTION_HEIGHT   480
 
 
-#endif // LS_MAIN_H
+#endif /* LS_MAIN_H */
 
 
 ///////////////////////////

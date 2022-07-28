@@ -9,16 +9,15 @@ set /p NAME=<name.bat
 
 :file_list
 set MAIN=.\src\main.c
-set GLAD=.\src\glad\glad.c
-set WIND=.\src\window\win32.c
-set MEMORY=.\src\memory\memory32.c
-set EVENT=.\src\event\event32.c
-
-set ARRAY=.\src\array\array.c
+set GLAD=.\src\vendors\glad\glad.c
+set WINDOW=.\src\win32\window\window.c
+set EVENT=.\src\event\event.c
 set RENDER=.\src\render\rendergl.c
+set MEMORY=.\src\memory\memory.c
+set ARRAY=.\src\array\array.c
 
 
-set FILES=%MAIN% %GLAD% %WIND% %MEMORY% %EVENT% %ARRAY% %RENDER%
+set FILES=%MAIN% %GLAD% %WINDOW% %EVENT% %RENDER% %MEMORY% %ARRAY%
 
 :library
 set Library=-lgdi32 -lopengl32

@@ -10,26 +10,26 @@
 
 
 // Structure
-typedef struct LS_List_
+typedef struct ls_list_
 {
   int count;
   int max;
-  size_t isize;
-  LS_Memory arena;
+  usize isize;
+  ls_memory arena;
   void* items;
-} LS_List_, *LS_List;
+} ls_list_, *ls_list;
 
 // Declaration
-LS_HAROLD_API LS_List LS_ListNew(LS_Memory arena, uSize size);
-LS_HAROLD_API void LS_ListFree(LS_List list);
-LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item);
-LS_HAROLD_API void LS_ListRm(LS_List list, void* item);
-LS_HAROLD_API void LS_ListRemove(LS_List list, void* item);
-LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num);
-LS_HAROLD_API void* LS_ListSet(LS_List list, i32 num, void* item);
+LS_HAROLD_API ls_list ls_list_new(ls_memory arena, usize size);
+LS_HAROLD_API void  ls_list_free(ls_list list);
+LS_HAROLD_API void* ls_list_add(ls_list list, void* item);
+LS_HAROLD_API void  ls_list_rm(ls_list list, void* item);
+LS_HAROLD_API void  ls_list_remove(ls_list list, void* item);
+LS_HAROLD_API void* ls_list_get(ls_list list, i32 num);
+LS_HAROLD_API void* ls_list_set(ls_list list, i32 num, void* item);
 
 
-#endif // LS_ARRAY_H
+#endif /* LS_ARRAY_H */
 
 
 ///////////////////////////

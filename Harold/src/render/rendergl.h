@@ -10,10 +10,10 @@
 
 
 // Declaration
-LS_HAROLD_API void LS_RenderFrameGraphics(void);
+LS_HAROLD_API void ls_render_frame_graphics(void);
 
 
-#endif // LS_RENDERGL_H
+#endif /* LS_RENDERGL_H */
 
 ///////////////////////////
 // EOF

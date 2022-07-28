@@ -10,7 +10,7 @@
 #include "array.h"
 
 
-#endif // LS_ARRAY_INT_H
+#endif /* LS_ARRAY_INT_H */
 
 
 ///////////////////////////

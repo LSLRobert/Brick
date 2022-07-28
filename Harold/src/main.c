@@ -17,10 +17,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 {
   LRESULT Result = 0;
   
-  gMainArgs.hInstance = hInstance;
-  gMainArgs.hPrevInstance = hPrevInstance;
-  gMainArgs.lpCmdLine = lpCmdLine;
-  gMainArgs.nCmdShow = nCmdShow;
+  g_main_args.hInstance = hInstance;
+  g_main_args.hPrevInstance = hPrevInstance;
+  g_main_args.lpCmdLine = lpCmdLine;
+  g_main_args.nCmdShow = nCmdShow;
   
   UNREFERENCED_PARAMETER(hInstance);
   UNREFERENCED_PARAMETER(hPrevInstance);

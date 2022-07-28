@@ -9,10 +9,10 @@
 #define MAIN_H
 
 
-// c includes
+/* c includes */
 #include <stdio.h>
 
-// includes
+/* includes */
 //#include "memory/memory.h"
 
 

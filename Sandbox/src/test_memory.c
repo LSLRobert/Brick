@@ -7,20 +7,16 @@
 ////////////////////////////////////////////////////////////
 
 
-#define Kilobyte(Value) (Value * 1024LL)
-#define Megabyte(Value) (Value * 1024LL * 1024)
-#define Gigabyte(Value) (Value * 1024LL * 1024 * 1024)
+/* fields and struct */
+ls_memory my_memory;
 
-// fields/struct
-LS_Memory my_memory;
-
-// test_init_memory
+/* test_init_memory */
 void test_init_memory()
 {
-  //
+  /* Testing MEMORY */
   puts("\nSTART -- Testing MEMORY\n");
   
-  my_memory = LS_MemoryNew(Megabyte(4));
+  my_memory = ls_memory_new(Megabyte(4));
   printf("Memory Address: %p\n", my_memory->address);
   printf("Memory Size:    %d\n", my_memory->size);
   
@@ -28,20 +24,20 @@ void test_init_memory()
 }
 
 
-// test_loop_memory
+/* test_loop_memory */
 void test_loop_memory()
 {
-  //
+  
 }
 
 
-// test_exit_memory
+/* test_exit_memory */
 void test_exit_memory()
 {
-  //
+  /* Testing MEMORY */
   puts("\nSTART -- Testing MEMORY\n");
   
-  LS_MemoryFree(my_memory);
+  ls_memory_free(my_memory);
   puts("Memory Free\n");
   
   puts("\nEND   -- Testing MEMORY\n");

@@ -20,15 +20,13 @@
   #include "../res/resource.h"
   #pragma warning(pop)
   
-  // GL Version 4.5
-  #include "glad/glad.h"
+  /* GL Version 4.5 */
+  #include "vendors/glad/glad.h"
   
   #include "main.h"
-  #include "window/win32_int.h"
-  #include "memory/memory32_int.h"
-  #include "event/event32_int.h"
+  #include "win32/window/window_int.h"
   
-#else // OTHER_PLATFORMS
+#else /* OTHER_PLATFORMS */
   
   // TODO: add other OS's
   // Apple
@@ -36,13 +34,15 @@
   // Mobile
   // Web
   
-#endif // LS_PLATFORM_WINDOWS
+#endif /* LS_PLATFORM_WINDOWS */
 
-// NON_PLATFORM
-#include "array/array_int.h"
-#include "render/rendergl_int.h"
+  /* NON_PLATFORM */
+  #include "event/event_int.h"
+  #include "render/rendergl_int.h"
+  #include "memory/memory_int.h"
+  #include "array/array_int.h"
 
-#endif // LS_HEADER_H
+#endif /* LS_HEADER_H */
 
 ///////////////////////////
 // EOF

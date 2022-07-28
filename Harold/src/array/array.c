@@ -8,12 +8,11 @@
 #include "header.h"
 #include "array_int.h"
 
-
-// LS_ListNew
-LS_HAROLD_API LS_List LS_ListNew(LS_Memory arena, uSize size)
+/* ls_list_new */
+LS_HAROLD_API ls_list ls_list_new(ls_memory arena, usize size)
 {
 //  LS_List list = malloc(sizeof(struct LS_List_));
-  LS_List list = LS_Malloc(arena, sizeof(struct LS_List_));
+  ls_list list = ls_malloc(arena, sizeof(struct ls_list_));
   list->isize = size;
   list->count = 0;
   list->max = 0;
@@ -22,30 +21,30 @@ LS_HAROLD_API LS_List LS_ListNew(LS_Memory arena, uSize size)
 }
 
 
-// LS_ListFree
-LS_HAROLD_API void LS_ListFree(LS_List list)
+/* ls_list_free */
+LS_HAROLD_API void  ls_list_free(ls_list list)
 {
-  LS_Free(list->arena, list->items);
-  LS_Free(list->arena, list);
+  ls_free(list->arena, list->items);
+  ls_free(list->arena, list);
 }
 
 
-// LS_ListAdd
-LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item)
+/* ls_list_add */
+LS_HAROLD_API void* ls_list_add(ls_list list, void* item)
 {
   u8* pos = NULL;
   
   if (list->items == NULL)
   {
 //    list->items = malloc(list->isize);
-    list->items = LS_Malloc(list->arena, list->isize);
+    list->items = ls_malloc(list->arena, list->isize);
     list->max = 1;
   }
   else if (list->count == list->max)
   {
     size_t size = list->isize * list->max * 2;
 //    void* items = realloc(list->items, size);
-    void* items = LS_Realloc(list->arena, list->items, size);
+    void* items = ls_realloc(list->arena, list->items, size);
     if (items == NULL)
     {
       puts("realloc failed!");
@@ -67,15 +66,16 @@ LS_HAROLD_API void* LS_ListAdd(LS_List list, void* item)
   return pos;
 }
 
-// LS_ListRm
-LS_HAROLD_API void LS_ListRm(LS_List list, void* item)
+
+/* ls_list_rm */
+LS_HAROLD_API void  ls_list_rm(ls_list list, void* item)
 {
   u8* pos = (u8*)list->items;
   size_t tail_size = 0;
   
   for (int i=0; i < list->count; ++i)
   {
-    if (memcmp(pos, item, list->isize) == 0) // 0 SUCCESS/NO_ERROR
+    if (memcmp(pos, item, list->isize) == 0) /* 0 SUCCESS/NO_ERROR */
     {
       tail_size = (list->max - (i + 1)) * list->isize;
       if (memcpy(pos, pos + list->isize, tail_size) == NULL)
@@ -93,7 +93,7 @@ LS_HAROLD_API void LS_ListRm(LS_List list, void* item)
   {
     size_t size = list->isize * (list->max / 2);
 //    void* items = realloc(list->items, size);
-    void* items = LS_Realloc(list->arena, list->items, size);
+    void* items = ls_realloc(list->arena, list->items, size);
     if (items == NULL)
     {
       puts("realloc failed!");
@@ -104,14 +104,16 @@ LS_HAROLD_API void LS_ListRm(LS_List list, void* item)
   }
 }
 
-// LS_ListRemove
-LS_HAROLD_API void LS_ListRemove(LS_List list, void* item)
+
+/* ls_list_remove */
+LS_HAROLD_API void  ls_list_remove(ls_list list, void* item)
 {
-  LS_ListRm(list, item);
+  ls_list_rm(list, item);
 }
 
-// LS_ListGet
-LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num)
+
+/* ls_list_get */
+LS_HAROLD_API void* ls_list_get(ls_list list, i32 num)
 {
   u8* pos = NULL;
   if (num < 0 && num >= list->count)
@@ -123,8 +125,9 @@ LS_HAROLD_API void* LS_ListGet(LS_List list, i32 num)
   return pos;
 }
 
-// LS_ListSet
-LS_HAROLD_API void* LS_ListSet(LS_List list, i32 num, void* item)
+
+/* ls_list_set */
+LS_HAROLD_API void* ls_list_set(ls_list list, i32 num, void* item)
 {
   u8* pos = NULL;
   if (num < 0 && num >= list->count)
